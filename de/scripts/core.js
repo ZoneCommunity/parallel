@@ -8,6 +8,7 @@ let System = {
 export { System };
 import { LaunchDesktop } from './apps/desktop.js';
 import { createWindow } from './window.js';
+import { launchMediaPlayer } from './apps/mediaplayer.js';
 
 function Init() {
     LaunchDesktop();
@@ -28,6 +29,7 @@ function Init() {
     createWindow("Firefox", "./firefox.png");
 
     createFileBrowser();
+    launchMediaPlayer();
 
     //Window.appendChild(win);
 

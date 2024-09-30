@@ -369,7 +369,3 @@ function getBrowserInfo() {
     }
     return `${os} with ${browserName} ${browserVersion}`;
 }
-
-document.addEventListener('DOMContentLoaded', (event) => {
-    Init();
-});
