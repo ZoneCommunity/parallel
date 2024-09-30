@@ -1,0 +1,15 @@
+{
+  "name": "parallel",
+  "productName": "parallel",
+  "version": "1.0.0",
+  "description": "parallel web desktop",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "ZoneCommunity",
+  "license": "MIT",
+  "dependencies": {
+    "electron": "^31.2.1"
+  }
+}
