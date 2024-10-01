@@ -26,7 +26,20 @@ function Init() {
     }
     Window.appendChild(CounterButton);
 
-    createWindow("Firefox", "./firefox.png");
+    createWindow("Firefox", "./firefox.png", '900px', '700px');
+    let WindowBase2 = document.getElementById(System.AppID);
+    let Window2 = WindowBase2.querySelector('.window-content');
+    var iframe = document.createElement('webview');
+    // Set iframe attributes
+    iframe.src = "https://www.google.com";
+    iframe.style.width = "100%";
+    iframe.style.height = "85%";
+    iframe.style.position = "absolute";
+    // iframe.style.top = "50";
+    iframe.style.left = "0";
+    
+    // Append the iframe to the body
+    Window2.appendChild(iframe);
 
     createFileBrowser();
     launchMediaPlayer();

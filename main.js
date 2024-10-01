@@ -8,6 +8,9 @@ function createMainWindow() {
         height: 1600,
         //titleBarStyle: 'hidden'
         //frame: false
+        webPreferences: {
+            webviewTag: true
+        }
     });
 
     mainWindow.loadFile(path.join(__dirname, './de/index.html'))

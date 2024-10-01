@@ -26,7 +26,7 @@ function LaunchDesktop() {
     watermark.style.padding = '5px';
     watermark.style.fontSize = "16px";
     watermark.style.fontWeight = 500;
-    watermark.style.textShadow = '0px 2px 20px rgba(0, 0, 0, 0.2)';
+    watermark.style.textShadow = '0px 2px 20px rgba(0, 0, 0, 0.4)';
     watermark.innerHTML = `parallel Insider<br>
             running on ${getBrowserInfo()}<br>
             updated on 9/30/2024. Build 2 (240930)`;

@@ -4,9 +4,13 @@ import { updateTaskbar } from './apps/desktop.js';
 
 const windows = [];
 
-function createWindow(title, iconUrl = null) {
+function createWindow(title, iconUrl = null, width = '400px', height = '500px') {
     const windowElement = document.createElement("div");
     windowElement.classList.add("window");
+    
+    // Set the width and height of the window
+    windowElement.style.width = width;
+    windowElement.style.height = height;
 
     const titlebar = document.createElement("div");
     titlebar.classList.add("titlebar");
@@ -20,16 +24,10 @@ function createWindow(title, iconUrl = null) {
 
         const titleSpan = document.createElement("span");
         titleSpan.innerText = title;
-        //titleSpan.style.marginLeft = "auto";
         titleSpan.style.marginLeft = "10px";
         titleSpan.style.marginRight = "auto";
         titlebar.appendChild(titleSpan);
     } else {
-        //const icon = document.createElement("button");
-        //icon.classList.add("titlebar-icon");
-        //icon.innerHTML = "X";
-        //titlebar.appendChild(icon);
-
         const titleSpan = document.createElement("span");
         titleSpan.innerText = title;
         titleSpan.style.marginLeft = "10px";
@@ -42,7 +40,6 @@ function createWindow(title, iconUrl = null) {
 
     const close = document.createElement("button");
     close.classList.add("titlebar-button");
-    //close.innerHTML = "&#10005;";
     const closeImg = document.createElement("img");
     closeImg.src = './Group 2.svg';
     closeImg.style.width = "11px";
