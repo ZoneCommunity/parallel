@@ -3,7 +3,7 @@ import { System } from '../core.js';
 import { createWindow } from '../window.js';
 
 function launchMediaPlayer() {
-    createWindow("Media Player");
+    createWindow("Media Player", null,'700px', '500px');
     
         const windowElement = document.getElementById(System.AppID);
         const contentArea = windowElement.querySelector('.window-content');
@@ -37,8 +37,8 @@ function launchMediaPlayer() {
 
             const video = document.createElement('video');
             video.style.marginTop = "10px";
-            video.width = 360;
-            video.height = 360;
+            video.style.width = '100%';
+            video.style.height = '90%';
             video.controls = true;
             video.loop = true;
             const source = document.createElement('source');

@@ -7,39 +7,72 @@ let System = {
 };
 export { System };
 import { LaunchDesktop } from './apps/desktop.js';
-import { createWindow } from './window.js';
+import { createWindow, bringToFront } from './window.js';
 import { launchMediaPlayer } from './apps/mediaplayer.js';
 
 function Init() {
     LaunchDesktop();
-    createWindow("Counter");
-    let WindowBase = document.getElementById(System.AppID);
-    let Window = WindowBase.querySelector('.window-content');
-    Window.innerHTML = "Hello world!<br><br>Counter: 0<br><br>";
-    let count = 0;
-    let CounterButton = document.createElement("button");
-    CounterButton.innerHTML = "Increase count";
-    CounterButton.onclick = function() {
-        count++;
-        Window.innerHTML = `Hello world!<br><br>Counter: ${count}<br><br>`;
-        Window.appendChild(CounterButton);
-    }
-    Window.appendChild(CounterButton);
 
     createWindow("Internet", "./Internet.png", '900px', '700px');
     let WindowBase2 = document.getElementById(System.AppID);
     let Window2 = WindowBase2.querySelector('.window-content');
+    let TitleBar2 = WindowBase2.querySelector('.titlebar')
     var iframe = document.createElement('webview');
     // Set iframe attributes
     iframe.src = "https://www.google.com";
     iframe.style.width = "100%";
-    iframe.style.height = "85%";
+    iframe.style.height = "calc(100% - 100px)";
     iframe.style.position = "absolute";
-    // iframe.style.top = "50";
+    iframe.style.top = "100px";
     iframe.style.left = "0";
+
+    TitleBar2.addEventListener('mousedown', function() {
+        iframe.style.pointerEvents = 'none';
+    });
+    document.addEventListener('mouseup', function() {
+        iframe.style.pointerEvents = 'auto';
+    });
+
+    let navContainer = document.createElement('div');
+    navContainer.style.position = 'absolute';
+    navContainer.style.top = '50px';
+    navContainer.style.left = '0';
+    navContainer.style.width = '100%';
+    navContainer.style.height = '50px';
+    navContainer.style.backgroundColor = '#f1f1f1';
+    navContainer.style.display = 'flex';
+    navContainer.style.alignItems = 'center';
+    navContainer.style.padding = '0 10px';
+
+    let urlInput = document.createElement('input');
+    urlInput.type = 'text';
+    urlInput.placeholder = 'Enter URL...';
+    urlInput.style.width = '80%';
+    urlInput.style.height = '30px';
+    urlInput.style.marginRight = '10px';
+    
+    let goButton = document.createElement('button');
+    goButton.textContent = 'Go';
+    goButton.style.height = '30px';
+    goButton.style.cursor = 'pointer';
+
+
+    goButton.addEventListener('click', function() {
+        let url = urlInput.value.trim();
+        if (url) {
+            if (!url.startsWith('http')) {
+                url = 'https://' + url;
+            }
+            iframe.src = url;
+        }
+    });
+        
+    navContainer.appendChild(urlInput);
+    navContainer.appendChild(goButton);
     
     // Append the iframe to the body
     Window2.appendChild(iframe);
+    Window2.appendChild(navContainer);
 
     createFileBrowser();
     launchMediaPlayer();
