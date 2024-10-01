@@ -19,7 +19,7 @@ function LaunchDesktop() {
     desktop.style.paddingTop ="70px";
     const watermark = document.createElement('div');
     watermark.style.position = 'fixed';
-    watermark.style.bottom = '15px';
+    watermark.style.bottom = '65px';
     watermark.style.right = '20px';
     watermark.style.textAlign = 'right';
     watermark.style.color = 'white';
