@@ -26,7 +26,7 @@ function Init() {
     }
     Window.appendChild(CounterButton);
 
-    createWindow("Firefox", "./firefox.png", '900px', '700px');
+    createWindow("Internet", "./Internet.png", '900px', '700px');
     let WindowBase2 = document.getElementById(System.AppID);
     let Window2 = WindowBase2.querySelector('.window-content');
     var iframe = document.createElement('webview');
