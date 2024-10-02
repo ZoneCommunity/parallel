@@ -74,6 +74,20 @@ function Init() {
     Window2.appendChild(iframe);
     Window2.appendChild(navContainer);
 
+    let isTyping = false;
+    urlInput.addEventListener('focus', function() {
+        isTyping = true;
+    });
+
+    urlInput.addEventListener('blur', function() {
+        isTyping = false;
+    });
+    setInterval(function() {
+        if (!isTyping) {
+            urlInput.value = iframe.src;
+        }
+    }, 1000);
+
     createFileBrowser();
     launchMediaPlayer();
 

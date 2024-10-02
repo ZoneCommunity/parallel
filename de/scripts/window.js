@@ -76,6 +76,7 @@ function CloseWindow(windowElement) {
         const id = parseInt(windowElement.id);
         windows.splice(windows.findIndex(win => win.id === id), 1);
         windowElement.remove();
+        updateTaskbar();
         const winIndex = document.querySelectorAll('.window');
         let highestZIndex = 0;
         let highestZIndexWindow = null;
@@ -99,7 +100,6 @@ function CloseWindow(windowElement) {
                 highestZIndexTitlebar.classList.remove('inactive');
             }
         }
-        updateTaskbar();
     }, 300);
 }
 
