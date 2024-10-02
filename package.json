@@ -8,7 +8,7 @@
     "start": "electron ."
   },
   "author": "ZoneCommunity",
-  "license": "MIT",
+  "license": "BSD-2-Clause",
   "dependencies": {
     "electron": "^31.2.1"
   }
