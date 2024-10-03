@@ -147,6 +147,47 @@ body {
     height: calc(100% - 90px);
 }
 
+.resize-handle {
+    position: absolute;
+    background-color: transparent;
+    z-index: 10;
+}
+
+.resize-handle-top,
+.resize-handle-bottom {
+    height: 6px;
+    left: 6px;
+    right: 6px;
+    cursor: ns-resize;
+}
+
+.resize-handle-left,
+.resize-handle-right {
+    width: 6px;
+    top: 6px;
+    bottom: 6px;
+    cursor: ew-resize;
+}
+
+.resize-handle-top-left,
+.resize-handle-top-right,
+.resize-handle-bottom-left,
+.resize-handle-bottom-right {
+    width: 10px;
+    height: 10px;
+}
+
+.resize-handle-top-left { top: 0; left: 0; cursor: nwse-resize; }
+.resize-handle-top-right { top: 0; right: 0; cursor: nesw-resize; }
+.resize-handle-bottom-left { bottom: 0; left: 0; cursor: nesw-resize; }
+.resize-handle-bottom-right { bottom: 0; right: 0; cursor: nwse-resize; }
+
+.resize-handle-top { top: 0; }
+.resize-handle-bottom { bottom: 0; }
+.resize-handle-left { left: 0; }
+.resize-handle-right { right: 0; }
+
+
 .titlebar.inactive {
     /* background-color: #f8f8f8; */
     /* border-bottom: 1px solid #e0e0e0; */

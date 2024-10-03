@@ -4,7 +4,7 @@ import { updateTaskbar } from './apps/desktop.js';
 
 const windows = [];
 
-function createWindow(title, iconUrl = null, width = '400px', height = '500px') {
+function createWindow(title, iconUrl = null, width = '400px', height = '500px', resizable = true) {
     const windowElement = document.createElement("div");
     windowElement.classList.add("window");
     
@@ -14,7 +14,7 @@ function createWindow(title, iconUrl = null, width = '400px', height = '500px') 
 
     const titlebar = document.createElement("div");
     titlebar.classList.add("titlebar");
-    
+
     if (iconUrl) {
         const icon = document.createElement("img");
         icon.classList.add("titlebar-icon");
@@ -68,6 +68,75 @@ function createWindow(title, iconUrl = null, width = '400px', height = '500px') 
 
     bringToFront(windowElement);
     windowElement.addEventListener("mousedown", (event) => bringToFront(windowElement));
+
+    if (resizable) {
+        addResizeHandles(windowElement);
+    }
+}
+
+function addResizeHandles(windowElement) {
+    const handles = ['top-left', 'top-right', 'bottom-left', 'bottom-right', 'left', 'right', 'top', 'bottom'];
+
+    handles.forEach(handle => {
+        const resizeHandle = document.createElement("div");
+        resizeHandle.classList.add("resize-handle", "resize-handle-" + handle);
+
+        resizeHandle.addEventListener('mousedown', function (e) {
+            e.stopPropagation();
+            e.preventDefault();
+            const startX = e.clientX;
+            const startY = e.clientY;
+            const startRect = windowElement.getBoundingClientRect();
+
+            function doDrag(event) {
+                const dx = event.clientX - startX;
+                const dy = event.clientY - startY;
+
+                let newWidth = startRect.width;
+                let newHeight = startRect.height;
+                let newLeft = startRect.left;
+                let newTop = startRect.top;
+
+                if (handle.includes('right')) newWidth += dx;
+                if (handle.includes('left')) {
+                    newWidth -= dx;
+                    newLeft += dx;
+                }
+                if (handle.includes('bottom')) newHeight += dy;
+                if (handle.includes('top')) {
+                    newHeight -= dy;
+                    newTop += dy;
+                }
+
+                // Apply minimum size constraints
+                const minWidth = 200;
+                const minHeight = 100;
+                if (newWidth < minWidth) {
+                    if (handle.includes('left')) newLeft -= minWidth - newWidth;
+                    newWidth = minWidth;
+                }
+                if (newHeight < minHeight) {
+                    if (handle.includes('top')) newTop -= minHeight - newHeight;
+                    newHeight = minHeight;
+                }
+
+                windowElement.style.width = `${newWidth}px`;
+                windowElement.style.height = `${newHeight}px`;
+                windowElement.style.left = `${newLeft}px`;
+                windowElement.style.top = `${newTop}px`;
+            }
+
+            function stopDrag() {
+                document.removeEventListener('mousemove', doDrag);
+                document.removeEventListener('mouseup', stopDrag);
+            }
+
+            document.addEventListener('mousemove', doDrag);
+            document.addEventListener('mouseup', stopDrag);
+        });
+
+        windowElement.appendChild(resizeHandle);
+    });
 }
 
 function CloseWindow(windowElement) {
