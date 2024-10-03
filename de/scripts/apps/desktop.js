@@ -97,6 +97,9 @@ function updateTaskbar() {
             activeTbItem.classList.add('active');
         }
     }
+
+    const topBar = document.querySelector('.top-bar');
+    topBar.style.zIndex = System.zIndex++;
 }
 
 export { LaunchDesktop, updateTaskbar };

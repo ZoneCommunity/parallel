@@ -34,7 +34,7 @@ function Init() {
 
 function launchWebApp() {
 
-    createWindow("YouTube Music", null, '1100px', '700px');
+    createWindow("YouTube Music", null, '480px', '700px');
     let WindowBase2 = document.getElementById(System.AppID);
     let Window2 = WindowBase2.querySelector('.window-content');
     let TitleBar2 = WindowBase2.querySelector('.titlebar');
@@ -64,7 +64,7 @@ function launchWebApp() {
 
 function launchDiscord() {
 
-    createWindow("Discord", null, '1100px', '700px');
+    createWindow("Discord", null, '1060px', '750px');
     let WindowBase2 = document.getElementById(System.AppID);
     let Window2 = WindowBase2.querySelector('.window-content');
     let TitleBar2 = WindowBase2.querySelector('.titlebar');
