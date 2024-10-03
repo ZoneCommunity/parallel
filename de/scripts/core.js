@@ -50,13 +50,6 @@ function launchWebApp() {
     iframe.style.position = "absolute";
     iframe.style.top = "50px";
     iframe.style.left = "0";
-
-    TitleBar2.addEventListener('mousedown', function() {
-        iframe.style.pointerEvents = 'none';
-    });
-    document.addEventListener('mouseup', function() {
-        iframe.style.pointerEvents = 'auto';
-    });
     
     // Append the iframe to the body
     Window2.appendChild(iframe);
@@ -81,13 +74,6 @@ function launchDiscord() {
     iframe.style.position = "absolute";
     iframe.style.top = "45px";
     iframe.style.left = "0";
-
-    TitleBar2.addEventListener('mousedown', function() {
-        iframe.style.pointerEvents = 'none';
-    });
-    document.addEventListener('mouseup', function() {
-        iframe.style.pointerEvents = 'auto';
-    });
     
     // Append the iframe to the body
     Window2.appendChild(iframe);
@@ -106,14 +92,7 @@ function launchInternet() {
     iframe.style.position = "absolute";
     iframe.style.top = "100px";
     iframe.style.left = "0";
-
-    TitleBar2.addEventListener('mousedown', function() {
-        iframe.style.pointerEvents = 'none';
-    });
-    document.addEventListener('mouseup', function() {
-        iframe.style.pointerEvents = 'auto';
-    });
-
+    
     let navContainer = document.createElement('div');
     navContainer.style.position = 'absolute';
     navContainer.style.top = '50px';

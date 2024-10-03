@@ -84,6 +84,13 @@ function addResizeHandles(windowElement) {
         resizeHandle.addEventListener('mousedown', function (e) {
             e.stopPropagation();
             e.preventDefault();
+
+            // Disable pointer events for all webview elements
+            const webviewElements = document.getElementsByTagName('webview');
+            Array.from(webviewElements).forEach(webview => {
+                webview.style.pointerEvents = 'none';
+            });
+
             const startX = e.clientX;
             const startY = e.clientY;
             const startRect = windowElement.getBoundingClientRect();
@@ -127,6 +134,11 @@ function addResizeHandles(windowElement) {
             }
 
             function stopDrag() {
+                // Re-enable pointer events for all webview elements
+                Array.from(webviewElements).forEach(webview => {
+                    webview.style.pointerEvents = 'auto';
+                });
+
                 document.removeEventListener('mousemove', doDrag);
                 document.removeEventListener('mouseup', stopDrag);
             }
@@ -173,22 +185,36 @@ function CloseWindow(windowElement) {
 }
 
 function MoveWindow(event, windowElement) {
+    // Disable pointer events for all webview elements
+    const webviewElements = document.getElementsByTagName('webview');
+    Array.from(webviewElements).forEach(webview => {
+        webview.style.pointerEvents = 'none';
+    });
+
     let offsetX = event.clientX - windowElement.offsetLeft;
     let offsetY = event.clientY - windowElement.offsetTop;
+
     function moveAt(pageX, pageY) {
         windowElement.style.left = pageX - offsetX + 'px';
         windowElement.style.top = pageY - offsetY + 'px';
     }
+
     function onMouseMove(event) {
         moveAt(event.pageX, event.pageY);
     }
+
     document.addEventListener('mousemove', onMouseMove);
 
     windowElement.onmouseup = function() {
+        Array.from(webviewElements).forEach(webview => {
+            webview.style.pointerEvents = 'auto';
+        });
+
         document.removeEventListener('mousemove', onMouseMove);
         windowElement.onmouseup = null;
     };
 }
+
 
 function bringToFront(windowElement) {
     windowElement.style.zIndex = System.zIndex++;
