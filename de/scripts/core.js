@@ -20,6 +20,7 @@ function Init() {
 
     launchWebApp();
     launchDiscord();
+    launchTerminal();
 
     //Window.appendChild(win);
 
@@ -53,6 +54,62 @@ function launchWebApp() {
     
     // Append the iframe to the body
     Window2.appendChild(iframe);
+}
+
+function launchTerminal() {
+    createWindow("parallel Terminal", null, '400px', '500px');
+    let WindowBase2 = document.getElementById(System.AppID);
+    let Window2 = WindowBase2.querySelector('.window-content');
+    let TitleBar2 = WindowBase2.querySelector('.titlebar');
+    let CloseButton = TitleBar2.querySelector('.titlebar-button');
+    let Clsbtn = CloseButton.querySelector('img');
+    Clsbtn.src = './Group 2 copy.svg';
+    TitleBar2.style.backgroundColor = "black";
+    TitleBar2.style.color = "white";
+    Window2.style.backgroundColor = "black";
+
+    // Create a terminal output area
+    const terminalOutput = document.createElement('div');
+    terminalOutput.style.height = '90%';
+    terminalOutput.style.overflowY = 'auto';
+    terminalOutput.style.backgroundColor = 'black';
+    terminalOutput.style.color = 'white';
+    terminalOutput.style.padding = '10px';
+    terminalOutput.style.fontFamily = 'monospace';
+    terminalOutput.style.whiteSpace = 'pre-wrap'; // Preserve whitespace for terminal format
+
+    // Create an input area for commands
+    const terminalInput = document.createElement('input');
+    terminalInput.type = 'text';
+    terminalInput.style.width = '100%';
+    terminalInput.style.padding = '10px';
+    terminalInput.style.backgroundColor = '#000000';
+    terminalInput.style.color = 'white';
+    terminalInput.style.border = 'none';
+    terminalInput.style.outline = 'none';
+    terminalInput.placeholder = 'Enter command...';
+
+    // Handle input submission
+    terminalInput.addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') {
+            const command = terminalInput.value;
+            terminalOutput.textContent += `> ${command}\n`; // Display the command
+            terminalInput.value = ''; // Clear the input field
+            
+            try {
+                // Evaluate the command in the context of core.js
+                const result = eval(command); // Use eval to execute the command
+                terminalOutput.textContent += `${result}\n`; // Display the result
+            } catch (error) {
+                terminalOutput.textContent += `Error: ${error.message}\n`; // Display any errors
+            }
+            terminalOutput.scrollTop = terminalOutput.scrollHeight; // Scroll to bottom
+        }
+    });
+
+    // Append the output and input to the window
+    Window2.appendChild(terminalOutput);
+    Window2.appendChild(terminalInput);
 }
 
 function launchDiscord() {
@@ -92,7 +149,7 @@ function launchInternet() {
     iframe.style.position = "absolute";
     iframe.style.top = "100px";
     iframe.style.left = "0";
-    
+
     let navContainer = document.createElement('div');
     navContainer.style.position = 'absolute';
     navContainer.style.top = '50px';
