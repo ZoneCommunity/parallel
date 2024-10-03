@@ -13,6 +13,87 @@ import { launchMediaPlayer } from './apps/mediaplayer.js';
 function Init() {
     LaunchDesktop();
 
+    //launchInternet();
+
+    //createFileBrowser();
+    //launchMediaPlayer();
+
+    launchWebApp();
+    launchDiscord();
+
+    //Window.appendChild(win);
+
+
+    //System.vfs.changeDirectory('docs');
+    //System.vfs.changeDirectory('life');
+    console.log(System.vfs.listContents());
+    //System.vfs.changeDirectory('..');
+    //console.log(System.vfs.listContents());
+    //console.log(System.vfs.readFile('wow.md'));
+}
+
+function launchWebApp() {
+
+    createWindow("YouTube Music", null, '1100px', '700px');
+    let WindowBase2 = document.getElementById(System.AppID);
+    let Window2 = WindowBase2.querySelector('.window-content');
+    let TitleBar2 = WindowBase2.querySelector('.titlebar');
+    let CloseButton = TitleBar2.querySelector('.titlebar-button');
+    let Clsbtn = CloseButton.querySelector('img');
+    Clsbtn.src = './Group 2 copy.svg';
+    TitleBar2.style.backgroundColor = "black";
+    var iframe = document.createElement('webview');
+    // Set iframe attributes
+    iframe.src = "https://music.youtube.com/";
+    iframe.style.width = "100%";
+    iframe.style.height = "calc(100% - 50px)";
+    iframe.style.position = "absolute";
+    iframe.style.top = "50px";
+    iframe.style.left = "0";
+
+    TitleBar2.addEventListener('mousedown', function() {
+        iframe.style.pointerEvents = 'none';
+    });
+    document.addEventListener('mouseup', function() {
+        iframe.style.pointerEvents = 'auto';
+    });
+    
+    // Append the iframe to the body
+    Window2.appendChild(iframe);
+}
+
+function launchDiscord() {
+
+    createWindow("Discord", null, '1100px', '700px');
+    let WindowBase2 = document.getElementById(System.AppID);
+    let Window2 = WindowBase2.querySelector('.window-content');
+    let TitleBar2 = WindowBase2.querySelector('.titlebar');
+    let CloseButton = TitleBar2.querySelector('.titlebar-button');
+    let Clsbtn = CloseButton.querySelector('img');
+    Clsbtn.src = './Group 2 copy.svg';
+    TitleBar2.style.backgroundColor = "#1E1F22";
+    TitleBar2.style.color = "#1E1F22";
+    var iframe = document.createElement('webview');
+    // Set iframe attributes
+    iframe.src = "https://discord.com/channels/@me";
+    iframe.style.width = "100%";
+    iframe.style.height = "calc(100% - 45px)";
+    iframe.style.position = "absolute";
+    iframe.style.top = "45px";
+    iframe.style.left = "0";
+
+    TitleBar2.addEventListener('mousedown', function() {
+        iframe.style.pointerEvents = 'none';
+    });
+    document.addEventListener('mouseup', function() {
+        iframe.style.pointerEvents = 'auto';
+    });
+    
+    // Append the iframe to the body
+    Window2.appendChild(iframe);
+}
+
+function launchInternet() {
     createWindow("Internet", "./Internet.png", '900px', '700px');
     let WindowBase2 = document.getElementById(System.AppID);
     let Window2 = WindowBase2.querySelector('.window-content');
@@ -87,19 +168,6 @@ function Init() {
             urlInput.value = iframe.src;
         }
     }, 1000);
-
-    createFileBrowser();
-    launchMediaPlayer();
-
-    //Window.appendChild(win);
-
-
-    //System.vfs.changeDirectory('docs');
-    //System.vfs.changeDirectory('life');
-    console.log(System.vfs.listContents());
-    //System.vfs.changeDirectory('..');
-    //console.log(System.vfs.listContents());
-    //console.log(System.vfs.readFile('wow.md'));
 }
 
 function createFileBrowser() {
