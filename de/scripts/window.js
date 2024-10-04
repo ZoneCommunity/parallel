@@ -8,7 +8,6 @@ function createWindow(title, iconUrl = null, width = '400px', height = '500px', 
     const windowElement = document.createElement("div");
     windowElement.classList.add("window");
     
-    // Set the width and height of the window
     windowElement.style.width = width;
     windowElement.style.height = height;
 
@@ -85,7 +84,6 @@ function addResizeHandles(windowElement) {
             e.stopPropagation();
             e.preventDefault();
 
-            // Disable pointer events for all webview elements
             const webviewElements = document.getElementsByTagName('webview');
             Array.from(webviewElements).forEach(webview => {
                 webview.style.pointerEvents = 'none';
@@ -115,7 +113,6 @@ function addResizeHandles(windowElement) {
                     newTop += dy;
                 }
 
-                // Apply minimum size constraints
                 const minWidth = 200;
                 const minHeight = 100;
                 if (newWidth < minWidth) {
@@ -134,7 +131,6 @@ function addResizeHandles(windowElement) {
             }
 
             function stopDrag() {
-                // Re-enable pointer events for all webview elements
                 Array.from(webviewElements).forEach(webview => {
                     webview.style.pointerEvents = 'auto';
                 });
@@ -185,7 +181,6 @@ function CloseWindow(windowElement) {
 }
 
 function MoveWindow(event, windowElement) {
-    // Disable pointer events for all webview elements
     const webviewElements = document.getElementsByTagName('webview');
     Array.from(webviewElements).forEach(webview => {
         webview.style.pointerEvents = 'none';

@@ -9,7 +9,9 @@ function createMainWindow() {
         //titleBarStyle: 'hidden'
         //frame: false
         webPreferences: {
-            webviewTag: true
+            webviewTag: true,
+            contextIsolation: false,
+            nodeIntegration: true
         }
     });
 
