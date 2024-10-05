@@ -56,8 +56,6 @@ class Directory {
     _saveChanges() {
         if (this._vfs) {
             this._vfs.saveToLocalStorage();
-        } else {
-            //console.error('Cannot save to local storage: VFS instance is not set.');
         }
     }
 
@@ -158,8 +156,6 @@ class VFS {
         if (this.root) {
             const json = this.root.toJSON();
             localStorage.setItem('vfsData', JSON.stringify(json));
-        } else {
-            // console.error('Cannot save to local storage: Root is not initialized.');
         }
     }
 

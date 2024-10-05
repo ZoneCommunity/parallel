@@ -1,12 +1,9 @@
 // mediaplayer.js
-import { System } from '../core.js';
-import { createWindow } from '../window.js';
+import { createWindow } from '../lib/windowManager.js';
 
 function launchMediaPlayer() {
-    createWindow("Media Player", null,'700px', '500px');
+    let contentArea = createWindow("Media Player", '700px', '500px');
     
-        const windowElement = document.getElementById(System.AppID);
-        const contentArea = windowElement.querySelector('.window-content');
         contentArea.innerHTML = "Now playing sample.mp4";
 
         const YayButton = document.createElement("button");

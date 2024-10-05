@@ -1,47 +1,38 @@
-// core.js
-import { VFS, Directory, File } from './vfs.js';
-let System = {
-    AppID: 0,
-    zIndex: 1,
-    vfs: new VFS()
-};
-export { System };
-import { LaunchDesktop } from './apps/desktop.js';
-import { createWindow, bringToFront } from './window.js';
-import { launchMediaPlayer } from './apps/mediaplayer.js';
+import { processManager } from './lib/processManager.js'
+import { createWindow } from './lib/windowManager.js'
 
-function Init() {
+// Apps
+import { LaunchDesktop } from './apps/desktop.js';
+
+const pm = new processManager();
+
+function init() {
+    console.log("Booting parallel...");
+
     LaunchDesktop();
 
-    //launchInternet();
+    /* let myWindow = createWindow("Test");
 
-    //createFileBrowser();
-    //launchMediaPlayer();
+    myWindow.innerHTML = "Hello, world!";
+
+    let myWindow2 = createWindow("Me");
+
+    myWindow2.innerHTML = "dewddced, world!"; */
+
 
     launchWebApp();
     launchDiscord();
     launchTerminal();
-
-    //Window.appendChild(win);
-
-
-    //System.vfs.changeDirectory('docs');
-    //System.vfs.changeDirectory('life');
-    console.log(System.vfs.listContents());
-    //System.vfs.changeDirectory('..');
-    //console.log(System.vfs.listContents());
-    //console.log(System.vfs.readFile('wow.md'));
 }
 
 function launchWebApp() {
 
-    createWindow("YouTube Music", null, '480px', '700px');
-    let WindowBase2 = document.getElementById(System.AppID);
-    let Window2 = WindowBase2.querySelector('.window-content');
+    let Window2 = createWindow("YouTube Music", '480px', '700px');
+    let WindowBase2 = Window2.parentElement;
     let TitleBar2 = WindowBase2.querySelector('.titlebar');
     let CloseButton = TitleBar2.querySelector('.titlebar-button');
     let Clsbtn = CloseButton.querySelector('img');
-    Clsbtn.src = './Group 2 copy.svg';
+    Clsbtn.src = './assets/window/close_white.svg';
     TitleBar2.style.backgroundColor = "black";
     var iframe = document.createElement('webview');
     // Set iframe attributes
@@ -57,13 +48,12 @@ function launchWebApp() {
 }
 
 function launchTerminal() {
-    createWindow("parallel Terminal", null, '400px', '500px');
-    let WindowBase2 = document.getElementById(System.AppID);
-    let Window2 = WindowBase2.querySelector('.window-content');
+    let Window2 = createWindow("parallel Terminal", '400px', '500px');
+    let WindowBase2 = Window2.parentElement;
     let TitleBar2 = WindowBase2.querySelector('.titlebar');
     let CloseButton = TitleBar2.querySelector('.titlebar-button');
     let Clsbtn = CloseButton.querySelector('img');
-    Clsbtn.src = './Group 2 copy.svg';
+    Clsbtn.src = './assets/window/close_white.svg';
     TitleBar2.style.backgroundColor = "black";
     TitleBar2.style.color = "white";
     Window2.style.backgroundColor = "black";
@@ -114,13 +104,12 @@ function launchTerminal() {
 
 function launchDiscord() {
 
-    createWindow("Discord", null, '1060px', '750px');
-    let WindowBase2 = document.getElementById(System.AppID);
-    let Window2 = WindowBase2.querySelector('.window-content');
+    let Window2 = createWindow("Discord", '1060px', '750px');
+    let WindowBase2 = Window2.parentElement;
     let TitleBar2 = WindowBase2.querySelector('.titlebar');
     let CloseButton = TitleBar2.querySelector('.titlebar-button');
     let Clsbtn = CloseButton.querySelector('img');
-    Clsbtn.src = './Group 2 copy.svg';
+    Clsbtn.src = './assets/window/close_white.svg';
     TitleBar2.style.backgroundColor = "#1E1F22";
     TitleBar2.style.color = "#1E1F22";
     var iframe = document.createElement('webview');
@@ -137,9 +126,8 @@ function launchDiscord() {
 }
 
 function launchInternet() {
-    createWindow("Internet", "./Internet.png", '900px', '700px');
-    let WindowBase2 = document.getElementById(System.AppID);
-    let Window2 = WindowBase2.querySelector('.window-content');
+    let Window2 = createWindow("Internet", '900px', '700px');
+    let WindowBase2 = Window2.parentElement;
     let TitleBar2 = WindowBase2.querySelector('.titlebar')
     var iframe = document.createElement('webview');
     // Set iframe attributes
@@ -206,87 +194,6 @@ function launchInternet() {
     }, 1000);
 }
 
-function createFileBrowser() {
-    createWindow("Files");
-    const windowBase = document.getElementById(System.AppID);
-    const window = windowBase.querySelector('.window-content');
-    
-    function renderContents(directory) {
-        window.innerHTML = '';
-        
-        // Display current directory path
-        const pathElement = document.createElement('div');
-        pathElement.textContent = `Current Path: ${getFullPath(System.vfs.currentDirectory)}`;
-        pathElement.style.fontWeight = 'bold';
-        pathElement.style.marginBottom = '10px';
-        pathElement.style.wordBreak = 'break-all';
-        window.appendChild(pathElement);
-        
-        // Add a back button if not in root
-        if (System.vfs.currentDirectory.name !== '/') {
-            const backButton = document.createElement('button');
-            backButton.textContent = '< Back';
-            backButton.onclick = () => {
-                System.vfs.changeDirectory('..');
-                renderContents(System.vfs.currentDirectory);
-            };
-            window.appendChild(backButton);
-        }
-        
-        const contents = System.vfs.listContents();
-        contents.forEach(item => {
-            const itemElement = document.createElement('div');
-            itemElement.textContent = item;
-            itemElement.style.cursor = 'pointer';
-            itemElement.style.padding = '5px';
-            itemElement.onclick = () => {
-                const selectedItem = System.vfs.currentDirectory.getItem(item);
-                if (selectedItem instanceof Directory) {
-                    System.vfs.changeDirectory(item);
-                    renderContents(selectedItem);
-                } else if (selectedItem instanceof File) {
-                    createFileEditor(selectedItem);
-                }
-            };
-            window.appendChild(itemElement);
-        });
-    }
-    
-    function getFullPath(directory) {
-        const path = [];
-        let currentDir = directory;
-        while (currentDir && currentDir.name !== '/') {
-            path.unshift(currentDir.name);
-            currentDir = currentDir.parent;
-        }
-        return path.length ? '/' + path.join('/') : '/';
-    }
+init();
 
-    renderContents(System.vfs.currentDirectory);
-}
-
-function createFileEditor(file) {
-    createWindow(`Editor - ${file.name}`);
-    const windowBase = document.getElementById(System.AppID);
-    const window = windowBase.querySelector('.window-content');
-    
-    const textarea = document.createElement('textarea');
-    textarea.value = file.content;
-    textarea.style.width = '90%';
-    textarea.style.height = '70%';
-    textarea.style.marginBottom = '10px';
-    
-    const saveButton = document.createElement('button');
-    saveButton.textContent = 'Save';
-    saveButton.onclick = () => {
-        file.updateContent(textarea.value);
-        alert('File saved successfully!');
-    };
-    
-    window.appendChild(textarea);
-    window.appendChild(saveButton);
-}
-
-
-// Don't remove this, or else nothing will load.
-Init();
+export { pm };

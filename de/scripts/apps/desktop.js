@@ -1,9 +1,11 @@
 // desktop.js
-import { System } from '../core.js';
-import { getBrowserInfo } from '../apps/misc.js'; 
-import { unfocusAll, windows, bringToFront } from '../window.js';
+import { pm } from '../core.js';
+
+import { unfocusAll, focusWindow, openWindows } from '../lib/windowManager.js'
+import { getBrowserInfo } from '../lib/misc.js'; 
 
 function LaunchDesktop() {
+    const desktopProc = pm.createProcess("desktop");
     const desktop = document.createElement('div');
     desktop.style.position = 'fixed';
     desktop.style.top = 0;
@@ -29,12 +31,13 @@ function LaunchDesktop() {
     watermark.style.textShadow = '0px 2px 20px rgba(0, 0, 0, 0.4)';
     watermark.innerHTML = `parallel Insider<br>
             running on ${getBrowserInfo()}<br>
-            updated on 10/2/2024. Build 2 (241002)`;
+            updated on 10/5/2024. Build 3 (241005)`;
     desktop.appendChild(watermark);
     document.body.appendChild(desktop);
-    desktop.addEventListener("mousedown", (event) => unfocusAll());
-    desktop.id = ++System.AppID;
+    desktop.addEventListener("mousedown", (event) => updateX());
+    desktop.id = desktopProc.getpID();
 
+    const topBarProc = pm.createProcess("topBar");
     const topBar = document.createElement('div');
     topBar.className = 'top-bar';
     const leftSection = document.createElement('div');
@@ -53,7 +56,7 @@ function LaunchDesktop() {
     dateTimeDiv.className = 'date-time';
     topBar.appendChild(dateTimeDiv);
 
-    topBar.id = ++System.AppID;
+    topBar.id = topBarProc.getpID();
     document.body.appendChild(topBar);
 
     function updateDateTime() {
@@ -76,14 +79,14 @@ function updateTaskbar() {
     const middleSection = document.querySelector('.middle-section');
     middleSection.innerHTML = '';
 
-    windows.forEach(window => {
+    openWindows.forEach(window => {
         const tbItem = document.createElement('div');
         tbItem.className = 'inactive';
         tbItem.textContent = window.title;
         tbItem.dataset.windowId = window.id;
         tbItem.onclick = function() {
-            const windowElement = document.getElementById(window.id);
-            bringToFront(windowElement);
+            const win = document.getElementById(window.id);
+            focusWindow(win);
         };
         middleSection.appendChild(tbItem);
     });
@@ -99,7 +102,27 @@ function updateTaskbar() {
     }
 
     const topBar = document.querySelector('.top-bar');
-    topBar.style.zIndex = System.zIndex++;
+
+    let highestZIndex = 0;
+    let windows = document.querySelectorAll(".window");
+    if (windows) {
+      let curZIndex = [];
+      for (let i = 0; i < windows.length; i++) {        
+        curZIndex.push(Number(windows[i].style.zIndex));
+      }
+      curZIndex.forEach((element) => {
+        if (highestZIndex < element) {
+            highestZIndex = element;
+        }
+      });
+    }
+
+    topBar.style.zIndex = highestZIndex + 1;
+}
+
+function updateX() {
+    unfocusAll();
+    updateTaskbar();
 }
 
 export { LaunchDesktop, updateTaskbar };

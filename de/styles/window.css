@@ -1,0 +1,117 @@
+/* Window */
+.window {
+    background-color: white;
+    color: black;
+    opacity: 0;
+    border-radius: 8px;
+    box-shadow: 0px 2px 60px rgba(0, 0, 0, 0.1);
+
+    position: absolute;
+    overflow: hidden;
+
+    transform: scale(0.5);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+.window.open {
+    transform: scale(1);
+    opacity: 1;
+}
+.window.close {
+    transform: scale(0.5); 
+    opacity: 0;
+}
+
+/* TitleBar */
+.titlebar {
+    color: rgb(0, 0, 0);
+
+    font-size: 14px;
+    font-weight: 500;
+
+    width: 100%;
+    height: 50px;
+    padding: 0 10px 0 10px;
+
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    box-sizing: border-box;
+}
+.titlebar-button {
+    background-color: transparent;
+    color: black;
+    border-radius: 50%;
+
+    font-size: 16px;
+
+    height: 24px;
+    width: 24px;
+    margin-right: 1px;
+
+    border-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    
+    transition: background-color 0.2s;
+}
+.titlebar-button:hover {
+    background-color: rgba(137, 194, 255, 0.236);
+}
+.inactive .titlebar-button:hover {
+    background-color: rgba(43, 123, 209, 0.1);
+}
+
+/* Content Area */
+.window-content {
+    background-color: #ffffff;
+
+    font-size: 15px;
+    
+    padding: 20px;
+
+    width: calc(100% - 40px);
+    height: calc(100% - 90px);
+}
+
+/* Resize Handles */
+.resize-handle {
+    position: absolute;
+    background-color: transparent;
+    z-index: 10;
+}
+
+.resize-handle-top,
+.resize-handle-bottom {
+    height: 6px;
+    left: 6px;
+    right: 6px;
+    cursor: ns-resize;
+}
+
+.resize-handle-left,
+.resize-handle-right {
+    width: 6px;
+    top: 6px;
+    bottom: 6px;
+    cursor: ew-resize;
+}
+
+.resize-handle-top-left,
+.resize-handle-top-right,
+.resize-handle-bottom-left,
+.resize-handle-bottom-right {
+    width: 10px;
+    height: 10px;
+}
+
+.resize-handle-top-left { top: 0; left: 0; cursor: nwse-resize; }
+.resize-handle-top-right { top: 0; right: 0; cursor: nesw-resize; }
+.resize-handle-bottom-left { bottom: 0; left: 0; cursor: nesw-resize; }
+.resize-handle-bottom-right { bottom: 0; right: 0; cursor: nwse-resize; }
+
+.resize-handle-top { top: 0; }
+.resize-handle-bottom { bottom: 0; }
+.resize-handle-left { left: 0; }
+.resize-handle-right { right: 0; }
