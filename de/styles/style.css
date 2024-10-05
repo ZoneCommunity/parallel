@@ -1,3 +1,7 @@
+* {
+    cursor: url('../assets/cursor/default.svg'), auto;
+}
+
 body {
     margin: 0;
 

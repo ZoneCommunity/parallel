@@ -73,6 +73,8 @@ function LaunchDesktop() {
     }
     setInterval(updateDateTime, 1000);
     updateDateTime();
+
+    updateTaskbar();
 }
 
 function updateTaskbar() {
