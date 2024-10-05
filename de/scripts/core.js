@@ -52,17 +52,12 @@ function launchTerminal() {
     let WindowBase2 = Window2.parentElement;
     let TitleBar2 = WindowBase2.querySelector('.titlebar');
     let CloseButton = TitleBar2.querySelector('.titlebar-button');
-    let Clsbtn = CloseButton.querySelector('img');
-    Clsbtn.src = './assets/window/close_white.svg';
-    TitleBar2.style.backgroundColor = "black";
-    TitleBar2.style.color = "white";
-    Window2.style.backgroundColor = "black";
 
     // Create a terminal output area
     const terminalOutput = document.createElement('div');
     terminalOutput.style.height = '90%';
     terminalOutput.style.overflowY = 'auto';
-    terminalOutput.style.backgroundColor = 'black';
+    terminalOutput.style.backgroundColor = '#ffffff00';
     terminalOutput.style.color = 'white';
     terminalOutput.style.padding = '10px';
     terminalOutput.style.fontFamily = 'monospace';
@@ -73,31 +68,28 @@ function launchTerminal() {
     terminalInput.type = 'text';
     terminalInput.style.width = '100%';
     terminalInput.style.padding = '10px';
-    terminalInput.style.backgroundColor = '#000000';
+    terminalInput.style.backgroundColor = '#ffffff00';
     terminalInput.style.color = 'white';
     terminalInput.style.border = 'none';
     terminalInput.style.outline = 'none';
     terminalInput.placeholder = 'Enter command...';
 
-    // Handle input submission
     terminalInput.addEventListener('keypress', function (e) {
         if (e.key === 'Enter') {
             const command = terminalInput.value;
-            terminalOutput.textContent += `> ${command}\n`; // Display the command
-            terminalInput.value = ''; // Clear the input field
+            terminalOutput.textContent += `> ${command}\n`;
+            terminalInput.value = '';
             
             try {
-                // Evaluate the command in the context of core.js
-                const result = eval(command); // Use eval to execute the command
-                terminalOutput.textContent += `${result}\n`; // Display the result
+                const result = eval(command);
+                terminalOutput.textContent += `${result}\n`;
             } catch (error) {
-                terminalOutput.textContent += `Error: ${error.message}\n`; // Display any errors
+                terminalOutput.textContent += `Error: ${error.message}\n`;
             }
-            terminalOutput.scrollTop = terminalOutput.scrollHeight; // Scroll to bottom
+            terminalOutput.scrollTop = terminalOutput.scrollHeight;
         }
     });
 
-    // Append the output and input to the window
     Window2.appendChild(terminalOutput);
     Window2.appendChild(terminalInput);
 }
