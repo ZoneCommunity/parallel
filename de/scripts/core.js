@@ -58,7 +58,7 @@ function launchTerminal() {
     terminalOutput.style.height = '90%';
     terminalOutput.style.overflowY = 'auto';
     terminalOutput.style.backgroundColor = '#ffffff00';
-    terminalOutput.style.color = 'white';
+    terminalOutput.style.color = 'black';
     terminalOutput.style.padding = '10px';
     terminalOutput.style.fontFamily = 'monospace';
     terminalOutput.style.whiteSpace = 'pre-wrap'; // Preserve whitespace for terminal format
@@ -69,7 +69,7 @@ function launchTerminal() {
     terminalInput.style.width = '100%';
     terminalInput.style.padding = '10px';
     terminalInput.style.backgroundColor = '#ffffff00';
-    terminalInput.style.color = 'white';
+    terminalInput.style.color = 'black';
     terminalInput.style.border = 'none';
     terminalInput.style.outline = 'none';
     terminalInput.placeholder = 'Enter command...';

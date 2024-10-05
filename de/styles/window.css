@@ -5,7 +5,7 @@
     opacity: 0;
 
     border-radius: 9px;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15), 0 6px 80px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 60px rgba(0, 0, 0, 0.1);
 
     backdrop-filter: blur(10px);
 
@@ -16,8 +16,8 @@
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
                 opacity 0.4s ease-in-out;
 
-    outline: 1px solid rgba(89, 89, 89, 0.5);
-    outline-offset: 0px;
+    /* outline: 1px solid rgba(89, 89, 89, 0.5);
+    outline-offset: 0px; */
 }
 .window.open {
     transform: scale(1);
@@ -26,7 +26,7 @@
 
 /* TitleBar */
 .titlebar {
-    background-color: #ffffff2f;
+    background-color: rgba(255, 255, 255, 0.7);
     color: rgb(0, 0, 0);
 
     font-size: 14px;
@@ -69,7 +69,7 @@
 
 /* Content Area */
 .window-content {
-    background-color: #ffffff2f;
+    background-color: rgba(255, 255, 255, 0.7);
 
     font-size: 15px;
     
