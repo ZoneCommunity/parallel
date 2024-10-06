@@ -239,4 +239,4 @@ function makeResizable(win) {
     });
 }
 
-export { createWindow, unfocusAll, focusWindow, openWindows };
+export { createWindow, unfocusAll, focusWindow, closeWindow, openWindows };

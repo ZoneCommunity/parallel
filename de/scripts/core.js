@@ -1,191 +1,197 @@
 import { processManager } from './lib/processManager.js'
-import { createWindow } from './lib/windowManager.js'
+import { createWindow, closeWindow } from './lib/windowManager.js'
+import VFS from './lib/vfs.js';
+
+const vfs = new VFS();
 
 // Apps
-import { LaunchDesktop } from './apps/desktop.js';
+import { launchDesktop } from './apps/desktop.js';
+import { launchMediaPlayer } from './apps/mediaplayer.js';
+import { launchYTMusic } from './apps/ytmusic.js'
 
 const pm = new processManager();
+
+let desktopProc;
+let topBarProc;
 
 function init() {
     console.log("Booting parallel...");
 
-    LaunchDesktop();
+    if (!vfs.exists('/parallel.zcf')) {
+        console.log("Time to setup!");
+        launchSetup();
+    } else {
+        console.log("Login experience");
+        launchLoginScreen();
+    }
 
-    /* let myWindow = createWindow("Test");
-
-    myWindow.innerHTML = "Hello, world!";
-
-    let myWindow2 = createWindow("Me");
-
-    myWindow2.innerHTML = "dewddced, world!"; */
-
-
-    launchWebApp();
-    launchDiscord();
-    launchTerminal();
+    //launchDesktop();
+    //launchYTMusic();
 }
 
-function launchWebApp() {
+function launchSetup() {
+    loadBar();
 
-    let Window2 = createWindow("YouTube Music", '480px', '700px');
-    let WindowBase2 = Window2.parentElement;
-    let TitleBar2 = WindowBase2.querySelector('.titlebar');
-    let CloseButton = TitleBar2.querySelector('.titlebar-button');
-    let Clsbtn = CloseButton.querySelector('img');
-    Clsbtn.src = './assets/window/close_white.svg';
-    TitleBar2.style.backgroundColor = "black";
-    var iframe = document.createElement('webview');
-    // Set iframe attributes
-    iframe.src = "https://music.youtube.com/";
-    iframe.style.width = "100%";
-    iframe.style.height = "calc(100% - 50px)";
-    iframe.style.position = "absolute";
-    iframe.style.top = "50px";
-    iframe.style.left = "0";
+    let contentArea = createWindow("parallel Setup", "1000px", "700px", false);
+
+    contentArea.innerHTML = `
+        <h2>Welcome to the parallel Setup!</h2>
+        <p>parallel is a modern and simple web based desktop environment.</p>
+        <br>
+        <p>This application will guide you through a simple setup of parallel.</p>
+        <p>You will:</p>
+        <ul style="list-style-type: none; padding-left: 20px;">
+            <li style="text-indent: 20px;">Create a user account</li>
+            <li style="text-indent: 20px;">Placeholder</li>
+        </ul>
+
+        <button id="nextButton" style="position: absolute; bottom: 10px; right: 10px;">Next</button>
+    `;
+
+    let nextButton = document.getElementById('nextButton');
+    nextButton.addEventListener('mouseup', nextStep1);
     
-    // Append the iframe to the body
-    Window2.appendChild(iframe);
+    function nextStep1() {
+        contentArea.innerHTML = `
+            <h2>Create a user account.</h2>
+            <div style="margin-bottom: 20px;">
+                <label for="username">Username:</label>
+                <input type="text" id="username"><br>
+
+                <label for="password" style="margin-top: 10px;">Password:</label>
+                <input type="password" id="password">
+            </div>
+
+            <button id="nextButton" style="position: absolute; bottom: 10px; right: 10px;">Next</button>
+        `;
+
+        nextButton = document.getElementById('nextButton');
+        nextButton.addEventListener('mouseup', nextStep2);
+    }
+
+    function nextStep2() {
+        let username = document.getElementById('username').value;
+        let password = document.getElementById('password').value;
+
+        if (username === "" || password === "") {
+            alert("Your username/password cannot be blank!");
+        } else {
+            vfs.createFile('/parallel.zcf', 'true');
+            vfs.createDirectory('/user');
+
+            vfs.createFile('/user/data.zcf', `${username},${password}`);
+
+            contentArea.innerHTML = `
+                <h2>Almost complete!</h2>
+                <p>Press next to complete the setup!</P>
+
+                <button id="nextButton" style="position: absolute; bottom: 10px; right: 10px;">Next</button>
+            `;
+
+            nextButton = document.getElementById('nextButton');
+            nextButton.addEventListener('mouseup', nextStep3);
+        }
+    }
+
+    function nextStep3() {
+        closeWindow(contentArea.parentElement);
+
+        pm.stopProcess(desktopProc.getpID());
+        pm.stopProcess(topBarProc.getpID());
+
+        launchLoginScreen();
+    }
 }
 
-function launchTerminal() {
-    let Window2 = createWindow("parallel Terminal", '400px', '500px');
-    let WindowBase2 = Window2.parentElement;
-    let TitleBar2 = WindowBase2.querySelector('.titlebar');
-    let CloseButton = TitleBar2.querySelector('.titlebar-button');
+function launchLoginScreen() {
+    loadBar();
 
-    // Create a terminal output area
-    const terminalOutput = document.createElement('div');
-    terminalOutput.style.height = '90%';
-    terminalOutput.style.overflowY = 'auto';
-    terminalOutput.style.backgroundColor = '#ffffff00';
-    terminalOutput.style.color = 'black';
-    terminalOutput.style.padding = '10px';
-    terminalOutput.style.fontFamily = 'monospace';
-    terminalOutput.style.whiteSpace = 'pre-wrap'; // Preserve whitespace for terminal format
+    let contentArea = createWindow("Login to parallel", "400px", "300px", false);
 
-    // Create an input area for commands
-    const terminalInput = document.createElement('input');
-    terminalInput.type = 'text';
-    terminalInput.style.width = '100%';
-    terminalInput.style.padding = '10px';
-    terminalInput.style.backgroundColor = '#ffffff00';
-    terminalInput.style.color = 'black';
-    terminalInput.style.border = 'none';
-    terminalInput.style.outline = 'none';
-    terminalInput.placeholder = 'Enter command...';
+    let win = contentArea.parentElement;
+    let titleBar = win.querySelector('.titlebar');
+    let closeButton = titleBar.querySelector('.titlebar-button');
 
-    terminalInput.addEventListener('keypress', function (e) {
-        if (e.key === 'Enter') {
-            const command = terminalInput.value;
-            terminalOutput.textContent += `> ${command}\n`;
-            terminalInput.value = '';
-            
-            try {
-                const result = eval(command);
-                terminalOutput.textContent += `${result}\n`;
-            } catch (error) {
-                terminalOutput.textContent += `Error: ${error.message}\n`;
+    closeButton.remove();
+
+    let username = vfs.readFile('/user/data.zcf');
+    username = username.split(',');
+    let password = username[1];
+    username = username[0];
+
+    contentArea.innerHTML = `
+        <h2>Welcome, ${username}!</h2>
+        <div style="margin-bottom: 20px;">
+            <label for="password" style="margin-top: 10px;">Password:</label>
+            <input type="password" id="password">
+        </div>
+        <br><br>
+        <p><em>I forgot my password..</em></p>
+    `;
+
+    let passwordBox = document.getElementById('password');
+
+    passwordBox.addEventListener('keydown', function(event) {
+        if (event.key === "Enter") {
+            if (passwordBox.value == password) {
+                pm.stopProcess(desktopProc.getpID());
+                pm.stopProcess(topBarProc.getpID());
+
+                closeWindow(win);
+
+                launchDesktop();
+            } else {
+                alert("Incorrect password!");
             }
-            terminalOutput.scrollTop = terminalOutput.scrollHeight;
         }
     });
-
-    Window2.appendChild(terminalOutput);
-    Window2.appendChild(terminalInput);
 }
 
-function launchDiscord() {
-
-    let Window2 = createWindow("Discord", '1060px', '750px');
-    let WindowBase2 = Window2.parentElement;
-    let TitleBar2 = WindowBase2.querySelector('.titlebar');
-    let CloseButton = TitleBar2.querySelector('.titlebar-button');
-    let Clsbtn = CloseButton.querySelector('img');
-    Clsbtn.src = './assets/window/close_white.svg';
-    TitleBar2.style.backgroundColor = "#1E1F22";
-    TitleBar2.style.color = "#1E1F22";
-    var iframe = document.createElement('webview');
-    // Set iframe attributes
-    iframe.src = "https://discord.com/channels/@me";
-    iframe.style.width = "100%";
-    iframe.style.height = "calc(100% - 45px)";
-    iframe.style.position = "absolute";
-    iframe.style.top = "45px";
-    iframe.style.left = "0";
+function loadBar() {
+    desktopProc = pm.createProcess("desktop");
+    const desktop = document.createElement('div');
+    desktop.style.position = 'fixed';
+    desktop.style.top = 0;
+    desktop.style.left = 0;
+    desktop.style.width = '100%';
+    desktop.style.height = '100%';
+    desktop.style.backgroundColor = 'rgba(0, 0, 0, 0)';
+    desktop.style.fontSize = "20px";
+    desktop.style.color = "#000000";
+    desktop.style.background = "url('./assets/backgrounds/default.jpg') center/cover no-repeat";
+    desktop.style.backgroundSize = "cover";
+    desktop.style.padding = "20px";
+    desktop.style.paddingTop ="70px";
+    desktop.id = desktopProc.getpID();
+    document.body.append(desktop);
     
-    // Append the iframe to the body
-    Window2.appendChild(iframe);
-}
+    topBarProc = pm.createProcess("topBar");
+    const topBar = document.createElement('div');
+    topBar.className = 'top-bar';
 
-function launchInternet() {
-    let Window2 = createWindow("Internet", '900px', '700px');
-    let WindowBase2 = Window2.parentElement;
-    let TitleBar2 = WindowBase2.querySelector('.titlebar')
-    var iframe = document.createElement('webview');
-    // Set iframe attributes
-    iframe.src = "https://www.google.com";
-    iframe.style.width = "100%";
-    iframe.style.height = "calc(100% - 100px)";
-    iframe.style.position = "absolute";
-    iframe.style.top = "100px";
-    iframe.style.left = "0";
+    const dateTimeDiv = document.createElement('div');
+    dateTimeDiv.className = 'date-time';
+    topBar.appendChild(dateTimeDiv);
 
-    let navContainer = document.createElement('div');
-    navContainer.style.position = 'absolute';
-    navContainer.style.top = '50px';
-    navContainer.style.left = '0';
-    navContainer.style.width = '100%';
-    navContainer.style.height = '50px';
-    navContainer.style.backgroundColor = '#f1f1f1';
-    navContainer.style.display = 'flex';
-    navContainer.style.alignItems = 'center';
-    navContainer.style.padding = '0 10px';
+    topBar.id = topBarProc.getpID();
+    document.body.appendChild(topBar);
 
-    let urlInput = document.createElement('input');
-    urlInput.type = 'text';
-    urlInput.placeholder = 'Enter URL...';
-    urlInput.style.width = '80%';
-    urlInput.style.height = '30px';
-    urlInput.style.marginRight = '10px';
-    
-    let goButton = document.createElement('button');
-    goButton.textContent = 'Go';
-    goButton.style.height = '30px';
-    goButton.style.cursor = 'pointer';
-
-
-    goButton.addEventListener('click', function() {
-        let url = urlInput.value.trim();
-        if (url) {
-            if (!url.startsWith('http')) {
-                url = 'https://' + url;
-            }
-            iframe.src = url;
-        }
-    });
+    function updateDateTime() {
+        const now = new Date();
+        const days = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const day = days[now.getDay()];
+        const date = now.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+        const time = now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit', hour12: true });
         
-    navContainer.appendChild(urlInput);
-    navContainer.appendChild(goButton);
-    
-    // Append the iframe to the body
-    Window2.appendChild(iframe);
-    Window2.appendChild(navContainer);
-
-    let isTyping = false;
-    urlInput.addEventListener('focus', function() {
-        isTyping = true;
-    });
-
-    urlInput.addEventListener('blur', function() {
-        isTyping = false;
-    });
-    setInterval(function() {
-        if (!isTyping) {
-            urlInput.value = iframe.src;
-        }
-    }, 1000);
+        dateTimeDiv.innerHTML = `
+            <span class="date">${day}, ${date}</span>
+            <span class="time">${time}</span>
+        `;
+    }
+    setInterval(updateDateTime, 1000);
+    updateDateTime();
 }
 
 init();
 
-export { pm };
+export { pm, launchLoginScreen, vfs, launchSetup };

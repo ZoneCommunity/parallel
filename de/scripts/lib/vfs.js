@@ -1,191 +1,146 @@
-class File {
-    constructor(name, content = '') {
-        this.name = name;
-        this.content = content;
-        this.createdAt = new Date();
-        this.updatedAt = new Date();
-    }
-
-    updateContent(newContent) {
-        this.content = newContent;
-        this.updatedAt = new Date();
-        if (this._vfs) {
-            this._vfs.saveToLocalStorage();
-        }
-    }
-
-    _setVFS(vfsInstance) {
-        this._vfs = vfsInstance;
-    }
-}
-
-class Directory {
-    constructor(name, parent = null) {
-        this.name = name;
-        this.contents = {};
-        this.createdAt = new Date();
-        this.parent = parent;
-    }
-
-    addFile(file) {
-        this.contents[file.name] = file;
-        file._setVFS(this._vfs);
-        this._saveChanges();
-    }
-
-    addDirectory(directory) {
-        directory.parent = this;
-        directory._setVFS(this._vfs);
-        this.contents[directory.name] = directory;
-        this._saveChanges();
-    }
-
-    getItem(name) {
-        return this.contents[name];
-    }
-
-    removeItem(name) {
-        delete this.contents[name];
-        this._saveChanges();
-    }
-
-    listContents() {
-        return Object.keys(this.contents);
-    }
-
-    _saveChanges() {
-        if (this._vfs) {
-            this._vfs.saveToLocalStorage();
-        }
-    }
-
-    _setVFS(vfsInstance) {
-        this._vfs = vfsInstance;
-    }
-
-    toJSON() {
-        const json = {
-            name: this.name,
-            contents: {}
-        };
-        for (const [key, value] of Object.entries(this.contents)) {
-            json.contents[key] = value instanceof Directory ? value.toJSON() : { name: value.name, content: value.content, createdAt: value.createdAt, updatedAt: value.updatedAt };
-        }
-        return json;
-    }
-}
-
 class VFS {
     constructor() {
-        this.root = VFS.loadFromLocalStorage();
-        this.currentDirectory = this.root;
-        this._setVFSForAllDirectories(this.root);
+      this.fs = this.loadFileSystem();
     }
-
-    _setVFSForAllDirectories(directory) {
-        directory._setVFS(this);
-        for (const item of Object.values(directory.contents)) {
-            if (item instanceof Directory) {
-                this._setVFSForAllDirectories(item);
-            } else if (item instanceof File) {
-                item._setVFS(this);
-            }
+  
+    loadFileSystem() {
+      const savedFS = localStorage.getItem('virtualFS');
+      return savedFS ? JSON.parse(savedFS) : { root: {} };
+    }
+  
+    saveFileSystem() {
+      localStorage.setItem('virtualFS', JSON.stringify(this.fs));
+    }
+  
+    createFile(path, content) {
+      const parts = path.split('/').filter(Boolean);
+      let current = this.fs.root;
+  
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (!current[parts[i]]) {
+          current[parts[i]] = {};
         }
+        current = current[parts[i]];
+      }
+  
+      current[parts[parts.length - 1]] = { type: 'file', content };
+      this.saveFileSystem();
     }
-
-    createFile(name, content = '') {
-        const file = new File(name, content);
-        this.currentDirectory.addFile(file);
-    }
-
-    createDirectory(name) {
-        const directory = new Directory(name, this.currentDirectory);
-        this.currentDirectory.addDirectory(directory);
-    }
-
-    changeDirectory(name) {
-        if (name === '/') {
-            this.currentDirectory = this.root;
-        } else if (name === '..') {
-            if (this.currentDirectory.parent) {
-                this.currentDirectory = this.currentDirectory.parent;
-            }
-        } else {
-            const dir = this.currentDirectory.getItem(name);
-            if (dir instanceof Directory) {
-                this.currentDirectory = dir;
-            } else {
-                console.error('Directory not found');
-            }
+  
+    readFile(path) {
+      const parts = path.split('/').filter(Boolean);
+      let current = this.fs.root;
+  
+      for (const part of parts) {
+        if (!current[part]) {
+          throw new Error('File not found');
         }
+        current = current[part];
+      }
+  
+      if (current.type !== 'file') {
+        throw new Error('Not a file');
+      }
+  
+      return current.content;
     }
-
-    listContents() {
-        return this.currentDirectory.listContents();
-    }
-
-    readFile(name) {
-        const file = this.currentDirectory.getItem(name);
-        if (file instanceof File) {
-            return file.content;
-        } else {
-            console.error('File not found');
+  
+    deleteFile(path) {
+      const parts = path.split('/').filter(Boolean);
+      let current = this.fs.root;
+  
+      for (let i = 0; i < parts.length - 1; i++) {
+        if (!current[parts[i]]) {
+          throw new Error('Path not found');
         }
+        current = current[parts[i]];
+      }
+  
+      if (!current[parts[parts.length - 1]]) {
+        throw new Error('File not found');
+      }
+  
+      delete current[parts[parts.length - 1]];
+      this.saveFileSystem();
     }
-
-    writeFile(name, content) {
-        const file = this.currentDirectory.getItem(name);
-        if (file instanceof File) {
-            file.updateContent(content);
-        } else {
-            console.error('File not found');
+  
+    createDirectory(path) {
+      const parts = path.split('/').filter(Boolean);
+      let current = this.fs.root;
+  
+      for (const part of parts) {
+        if (!current[part]) {
+          current[part] = {};
         }
+        current = current[part];
+      }
+  
+      this.saveFileSystem();
     }
-
-    removeItem(name) {
-        this.currentDirectory.removeItem(name);
-    }
-
-    clear() {
-        this.root = new Directory('/');
-        this.currentDirectory = this.root;
-        this.saveToLocalStorage();
-    }
-
-    saveToLocalStorage() {
-        if (this.root) {
-            const json = this.root.toJSON();
-            localStorage.setItem('vfsData', JSON.stringify(json));
+  
+    listDirectory(path) {
+      const parts = path.split('/').filter(Boolean);
+      let current = this.fs.root;
+  
+      for (const part of parts) {
+        if (!current[part]) {
+          throw new Error('Directory not found');
         }
+        current = current[part];
+      }
+  
+      return Object.keys(current).map(key => ({
+        name: key,
+        type: typeof current[key] === 'object' && !current[key].type ? 'directory' : 'file'
+      }));
     }
-
-    static loadFromLocalStorage() {
-        const data = localStorage.getItem('vfsData');
-        if (data) {
-            try {
-                const parsedData = JSON.parse(data);
-                return VFS._parseDirectory(parsedData);
-            } catch (e) {
-                console.error('Failed to load VFS data from local storage', e);
-            }
+  
+    reset() {
+      this.fs = { root: {} };
+      this.saveFileSystem();
+    }
+  
+    exists(path) {
+      const parts = path.split('/').filter(Boolean);
+      let current = this.fs.root;
+  
+      for (const part of parts) {
+        if (!current[part]) {
+          return false;
         }
-        return new Directory('/');
+        current = current[part];
+      }
+  
+      return true;
     }
-
-    static _parseDirectory(data, parent = null) {
-        const directory = new Directory(data.name, parent);
-        for (const [key, value] of Object.entries(data.contents)) {
-            if (value.contents) {
-                directory.addDirectory(VFS._parseDirectory(value, directory));
-            } else {
-                const file = new File(value.name, value.content);
-                file.createdAt = new Date(value.createdAt);
-                file.updatedAt = new Date(value.updatedAt);
-                directory.addFile(file);
-            }
+  
+    isFile(path) {
+      const parts = path.split('/').filter(Boolean);
+      let current = this.fs.root;
+  
+      for (const part of parts) {
+        if (!current[part]) {
+          return false;
         }
-        return directory;
+        current = current[part];
+      }
+  
+      return current.type === 'file';
     }
-}
-
-export { File, Directory, VFS };
+  
+    isDirectory(path) {
+      const parts = path.split('/').filter(Boolean);
+      let current = this.fs.root;
+  
+      for (const part of parts) {
+        if (!current[part]) {
+          return false;
+        }
+        current = current[part];
+      }
+  
+      return typeof current === 'object' && !current.type;
+    }
+  }
+  
+  export default VFS;

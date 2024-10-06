@@ -1,10 +1,16 @@
 // desktop.js
-import { pm } from '../core.js';
+import { pm, vfs } from '../core.js';
 
-import { unfocusAll, focusWindow, openWindows } from '../lib/windowManager.js'
+import { unfocusAll, focusWindow, closeWindow, openWindows } from '../lib/windowManager.js'
 import { getBrowserInfo } from '../lib/misc.js'; 
 
-function LaunchDesktop() {
+// Apps
+import { launchMediaPlayer } from './mediaplayer.js';
+import { launchYTMusic } from './ytmusic.js'
+
+import { launchLoginScreen, launchSetup } from '../core.js'
+
+function launchDesktop() {
     const desktopProc = pm.createProcess("desktop");
     const desktop = document.createElement('div');
     desktop.style.position = 'fixed';
@@ -75,51 +81,139 @@ function LaunchDesktop() {
     updateDateTime();
 
     updateTaskbar();
+
+    launcherShortcut.addEventListener('mouseup', toggleLauncher);
+
+    function toggleLauncher() {
+        let launcher = document.getElementById("launcher");
+    
+        if (launcher !== null) {
+            closeLauncher();
+        } else {
+            launcher = document.createElement("div");
+            launcher.id = "launcher";
+        
+            launcher.style.width = "600px";
+            launcher.style.height = "500px";
+            launcher.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
+            launcher.style.position = "absolute";
+            launcher.style.left = "23px";
+            launcher.style.top = "-250px";
+            launcher.style.transform = "translateY(-50%) translateX(-100%)";
+            launcher.style.borderRadius = "4px";
+            launcher.style.boxShadow = "0px 4px 60px rgba(0, 0, 0, 0.1)";
+            launcher.style.backdropFilter = 'blur(15px)';
+            launcher.style.opacity = "0";
+            launcher.style.transition = "transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), opacity 0.4s ease-in-out";
+    
+            let username = vfs.readFile('/user/data.zcf');
+            username = username.split(',');
+            username = username[0];
+
+            launcher.innerHTML = `<h2 style="color:black; padding-top:10px; padding-left:16px;">Hey, ${username}!</h2>
+            
+            <h4 style="color:black; padding-top:12px; padding-left:16px;">Your apps:</h4>`;
+
+            const shortcutList = document.createElement("ul");
+
+            shortcutList.id = "shortcutList";
+            shortcutList.style.listStyleType = "none";
+            shortcutList.style.paddingLeft = "7px";
+            shortcutList.style.marginTop = "-10px";
+        
+            const shortcuts = [
+                { name: "Logout", action: () => { launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchLoginScreen(); } },
+                { name: "YouTube Music", action: () => { launchYTMusic(); closeLauncher(); } },
+                { name: "Media Player", action: () => { launchMediaPlayer(); closeLauncher(); } },
+                { name: "Reset parallel", action: () => { vfs.reset(); launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchSetup(); } },
+            ];
+        
+            shortcuts.forEach(shortcut => {
+                const li = document.createElement("li");
+                li.textContent = shortcut.name;
+                li.style.cursor = "pointer";
+                li.style.padding = "10px";
+                li.style.color = "black";
+                li.addEventListener("click", shortcut.action);
+                shortcutList.appendChild(li);
+            });
+        
+            launcher.appendChild(shortcutList);
+            topBar.appendChild(launcher);
+        
+            requestAnimationFrame(() => {
+                launcher.style.opacity = "1";
+                launcher.style.transform = "translateY(-50%) translateX(0)";
+            });
+        }     
+        
+        function closeLauncher() {
+            launcher.style.transform = "translateY(-50%) translateX(-100%)";
+            launcher.style.opacity = "0";
+        
+            setTimeout(() => {
+                launcher.remove();
+            }, 400);
+        }
+
+        function closeAllWindows() {
+            let windows = document.querySelectorAll(".window");
+            if (windows) {
+              let curZIndex = [];
+              for (let i = 0; i < windows.length; i++) {
+                closeWindow(windows[i]);
+              }
+            }
+        }
+    }    
 }
 
 function updateTaskbar() {
     const middleSection = document.querySelector('.middle-section');
-    middleSection.innerHTML = '';
+    if (middleSection !== null) {
+        middleSection.innerHTML = '';
 
-    openWindows.forEach(window => {
-        const tbItem = document.createElement('div');
-        tbItem.className = 'inactive';
-        tbItem.textContent = window.title;
-        tbItem.dataset.windowId = window.id;
-        tbItem.onclick = function() {
-            const win = document.getElementById(window.id);
-            focusWindow(win);
-        };
-        middleSection.appendChild(tbItem);
-    });
+        openWindows.forEach(window => {
+            const tbItem = document.createElement('div');
+            tbItem.className = 'inactive';
+            tbItem.textContent = window.title;
+            tbItem.dataset.windowId = window.id;
+            tbItem.onclick = function() {
+                const win = document.getElementById(window.id);
+                focusWindow(win);
+            };
+            middleSection.appendChild(tbItem);
+        });
 
-    const activeWindow = document.querySelector('.titlebar:not(.inactive)');
-    if (activeWindow) {
-        const activeId = parseInt(activeWindow.parentElement.id);
-        const activeTbItem = Array.from(middleSection.children).find(item => parseInt(item.dataset.windowId) === activeId);
-        if (activeTbItem) {
-            activeTbItem.classList.remove('inactive');
-            activeTbItem.classList.add('active');
+        const activeWindow = document.querySelector('.titlebar:not(.inactive)');
+        if (activeWindow) {
+            const activeId = parseInt(activeWindow.parentElement.id);
+            const activeTbItem = Array.from(middleSection.children).find(item => parseInt(item.dataset.windowId) === activeId);
+            if (activeTbItem) {
+                activeTbItem.classList.remove('inactive');
+                activeTbItem.classList.add('active');
+            }
         }
     }
 
     const topBar = document.querySelector('.top-bar');
-
-    let highestZIndex = 0;
-    let windows = document.querySelectorAll(".window");
-    if (windows) {
-      let curZIndex = [];
-      for (let i = 0; i < windows.length; i++) {        
-        curZIndex.push(Number(windows[i].style.zIndex));
-      }
-      curZIndex.forEach((element) => {
-        if (highestZIndex < element) {
-            highestZIndex = element;
+    if (topBar !== null) {
+        let highestZIndex = 0;
+        let windows = document.querySelectorAll(".window");
+        if (windows) {
+          let curZIndex = [];
+          for (let i = 0; i < windows.length; i++) {        
+            curZIndex.push(Number(windows[i].style.zIndex));
+          }
+          curZIndex.forEach((element) => {
+            if (highestZIndex < element) {
+                highestZIndex = element;
+            }
+          });
         }
-      });
+    
+        topBar.style.zIndex = highestZIndex + 1;
     }
-
-    topBar.style.zIndex = highestZIndex + 1;
 }
 
 function updateX() {
@@ -127,4 +221,4 @@ function updateX() {
     updateTaskbar();
 }
 
-export { LaunchDesktop, updateTaskbar };
+export { launchDesktop, updateTaskbar };

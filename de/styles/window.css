@@ -7,7 +7,7 @@
     border-radius: 9px;
     box-shadow: 0px 4px 60px rgba(0, 0, 0, 0.1);
 
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(15px);
 
     position: absolute;
     overflow: hidden;
@@ -50,6 +50,7 @@
 
     height: 24px;
     width: 24px;
+    padding: 0px;
     margin-right: 1px;
 
     border-style: none;
@@ -119,3 +120,44 @@
 .resize-handle-bottom { bottom: 0; }
 .resize-handle-left { left: 0; }
 .resize-handle-right { right: 0; }
+
+button {
+    background-color: #fff;
+
+    padding: 7px;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    border-radius: 3px;
+    outline: none;
+    border-style: none;
+}
+
+button:hover {
+    background-color: #f0f0f0;
+}
+
+button:active {
+    background-color: #d8d8d8;
+}
+
+label {
+    display: block;
+    margin-top: 10px;
+    color: #333;
+}
+
+input {
+    display: block;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    border-color: #9f9f9f;
+    font-size: 16px;
+}
+
+input:focus {
+    border-color: #007bff;
+    outline: none;
+}
