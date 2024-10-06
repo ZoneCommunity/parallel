@@ -1,8 +1,8 @@
-// windowManager.js
 import { pm } from '../core.js';
 import { updateTaskbar } from '../apps/desktop.js';
 
 const openWindows = [];
+let closingWindows = new Set();
 
 function createWindow(title, width = '400px', height = '500px', resizable = true) {
     const win = document.createElement("div");
@@ -21,7 +21,11 @@ function createWindow(title, width = '400px', height = '500px', resizable = true
     titleSpan.style.marginLeft = "10px";
     titleSpan.style.marginRight = "auto";
     titlebar.appendChild(titleSpan);
-    titlebar.addEventListener("mousedown", (event) => moveWindow(event, win));
+    titlebar.addEventListener("mousedown", (event) => {
+        if (!closingWindows.has(win.id)) {
+            moveWindow(event, win);
+        }
+    });
 
     // Close Button
     const close = document.createElement("button");
@@ -63,41 +67,14 @@ function createWindow(title, width = '400px', height = '500px', resizable = true
     return contentArea;
 }
 
-function focusWindow(win) {
-    let highestZIndex = 0;
-    let windows = document.querySelectorAll(".window");
-    if (windows) {
-      let curZIndex = [];
-      for (let i = 0; i < windows.length; i++) {
-        let titlebar = windows[i].querySelector(".titlebar");
-        titlebar.classList.add("inactive");
-        
-        curZIndex.push(Number(windows[i].style.zIndex));
-      }
-      curZIndex.forEach((element) => {
-        if (highestZIndex < element) {
-            highestZIndex = element;
-        }
-      });
-    }
-    
-    if (parseInt(win.style.zIndex, 10) !== highestZIndex) {
-        win.style.zIndex = highestZIndex + 1;
-    }
-    let titlebar = win.querySelector(".titlebar");
-    titlebar.classList.remove("inactive");
-
-    updateTaskbar();
-}
-
-function unfocusAll() {
-    const elements = document.querySelectorAll('.titlebar');
-    elements.forEach(element => {
-      element.classList.add('inactive');
-    });
-}
-
 function closeWindow(win) {
+    closingWindows.add(win.id);
+
+    const webviewElements = document.getElementsByTagName('webview');
+    Array.from(webviewElements).forEach(webview => {
+        webview.style.pointerEvents = 'auto';
+    });
+
     let pID = Number(win.id);
     win.classList.remove("open");
     
@@ -132,7 +109,43 @@ function closeWindow(win) {
 
             updateTaskbar();
         }
+
+        closingWindows.delete(win.id);
     }, 300);
+}
+
+function focusWindow(win) {
+    let highestZIndex = 0;
+    let windows = document.querySelectorAll(".window");
+    if (windows) {
+      let curZIndex = [];
+      for (let i = 0; i < windows.length; i++) {
+        let titlebar = windows[i].querySelector(".titlebar");
+        titlebar.classList.add("inactive");
+        
+        curZIndex.push(Number(windows[i].style.zIndex));
+      }
+      curZIndex.forEach((element) => {
+        if (highestZIndex < element) {
+            highestZIndex = element;
+        }
+      });
+    }
+    
+    if (parseInt(win.style.zIndex, 10) !== highestZIndex) {
+        win.style.zIndex = highestZIndex + 1;
+    }
+    let titlebar = win.querySelector(".titlebar");
+    titlebar.classList.remove("inactive");
+
+    updateTaskbar();
+}
+
+function unfocusAll() {
+    const elements = document.querySelectorAll('.titlebar');
+    elements.forEach(element => {
+      element.classList.add('inactive');
+    });
 }
 
 // Window Moving, Resizing, etc..
@@ -182,6 +195,8 @@ function makeResizable(win) {
             Array.from(webviewElements).forEach(webview => {
                 webview.style.pointerEvents = 'none';
             });
+
+            focusWindow(win);
 
             const startX = e.clientX;
             const startY = e.clientY;
