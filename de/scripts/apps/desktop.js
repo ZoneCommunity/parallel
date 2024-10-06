@@ -8,6 +8,7 @@ import { getBrowserInfo } from '../lib/misc.js';
 import { launchMediaPlayer } from './mediaplayer.js';
 import { launchYTMusic } from './ytmusic.js'
 import { launchDiscord } from './discord.js'
+import { launchVSCode } from './vscode.js'
 
 import { launchLoginScreen, launchSetup } from '../core.js'
 
@@ -127,6 +128,7 @@ function launchDesktop() {
                 { name: "YouTube Music", action: () => { launchYTMusic(); closeLauncher(); } },
                 { name: "Discord", action: () => { launchDiscord(); closeLauncher(); } },
                 { name: "Media Player", action: () => { launchMediaPlayer(); closeLauncher(); } },
+                { name: "Visual Studio Code", action: () => { launchVSCode(); closeLauncher(); } },
                 { name: "Reset parallel", action: () => { vfs.reset(); launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchSetup(); } },
             ];
         
