@@ -1,29 +1,26 @@
 import { createWindow, focusWindow } from '../lib/windowManager.js';
 
 function launchPlutoSubsystem() {
+    // Create the content area for the Pluto Subsystem window
+    let contentArea = createWindow("Pluto Subsystem", '1060px', '750px');
+    let win = contentArea.parentElement;
 
-    let Window2 = createWindow("Pluto Subsystem", '1060px', '750px');
-    let WindowBase2 = Window2.parentElement;
-    let TitleBar2 = WindowBase2.querySelector('.titlebar');
-    //let CloseButton = TitleBar2.querySelector('.titlebar-button');
-    //let Clsbtn = CloseButton.querySelector('img');
-    //Clsbtn.src = './assets/window/close_white.svg';
-    //TitleBar2.style.backgroundColor = "#000000";
-    //TitleBar2.style.color = "#FFFFFF";
-    var iframe = document.createElement('webview');
-    // Set iframe attributes
-    iframe.src = "./scripts/apps/pluto/index.html";
-    iframe.style.width = "100%";
-    iframe.style.height = "100%"
-    iframe.style.position = "absolute";
-    iframe.style.top = "0";
-    iframe.style.left = "0";
-    iframe.addEventListener("focus", () => {
-        focusWindow(WindowBase2);
+    // Create the webview element for Pluto Subsystem
+    let webview = document.createElement('webview');
+    webview.src = "./scripts/apps/pluto/index.html";
+    webview.style.width = "100%";
+    webview.style.height = "100%";
+    webview.style.position = "absolute";
+    webview.style.top = "0";
+    webview.style.left = "0";
+
+    // Handle focus event for the webview
+    webview.addEventListener("focus", () => {
+        focusWindow(win);
     });
-    
-    // Append the iframe to the body
-    Window2.appendChild(iframe);
+
+    // Append the webview to the content area
+    contentArea.appendChild(webview);
 }
 
 export { launchPlutoSubsystem };

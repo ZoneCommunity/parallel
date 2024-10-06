@@ -1,29 +1,34 @@
 import { createWindow, focusWindow } from '../lib/windowManager.js';
 
 function launchVSCode() {
+    // Create the content area for the VS Code window
+    let contentArea = createWindow("Visual Studio Code", '1060px', '750px');
+    let win = contentArea.parentElement;
+    let titleBar = win.querySelector('.titlebar');
+    let closeButton = titleBar.querySelector('.titlebar-button');
+    let closeIcon = closeButton.querySelector('img');
 
-    let Window2 = createWindow("Visual Studio Code", '1060px', '750px');
-    let WindowBase2 = Window2.parentElement;
-    let TitleBar2 = WindowBase2.querySelector('.titlebar');
-    let CloseButton = TitleBar2.querySelector('.titlebar-button');
-    let Clsbtn = CloseButton.querySelector('img');
-    Clsbtn.src = './assets/window/close_white.svg';
-    TitleBar2.style.backgroundColor = "#181818";
-    TitleBar2.style.color = "#181818";
-    var iframe = document.createElement('webview');
-    // Set iframe attributes
-    iframe.src = "https://vscode.dev";
-    iframe.style.width = "100%";
-    iframe.style.height = "100%"
-    iframe.style.position = "absolute";
-    iframe.style.top = "0";
-    iframe.style.left = "0";
-    iframe.addEventListener("focus", () => {
-        focusWindow(WindowBase2);
+    // Customize the title bar
+    closeIcon.src = './assets/window/close_white.svg';
+    titleBar.style.backgroundColor = "#181818";
+    titleBar.style.color = "#181818";
+
+    // Create the webview element for VS Code
+    let webview = document.createElement('webview');
+    webview.src = "https://vscode.dev";
+    webview.style.width = "100%";
+    webview.style.height = "100%";
+    webview.style.position = "absolute";
+    webview.style.top = "0";
+    webview.style.left = "0";
+
+    // Handle focus event for the webview
+    webview.addEventListener("focus", () => {
+        focusWindow(win);
     });
-    
-    // Append the iframe to the body
-    Window2.appendChild(iframe);
+
+    // Append the webview to the content area
+    contentArea.appendChild(webview);
 }
 
 export { launchVSCode };
