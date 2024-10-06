@@ -7,6 +7,7 @@ import { getBrowserInfo } from '../lib/misc.js';
 // Apps
 import { launchMediaPlayer } from './mediaplayer.js';
 import { launchYTMusic } from './ytmusic.js'
+import { launchDiscord } from './discord.js'
 
 import { launchLoginScreen, launchSetup } from '../core.js'
 
@@ -124,6 +125,7 @@ function launchDesktop() {
             const shortcuts = [
                 { name: "Logout", action: () => { launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchLoginScreen(); } },
                 { name: "YouTube Music", action: () => { launchYTMusic(); closeLauncher(); } },
+                { name: "Discord", action: () => { launchDiscord(); closeLauncher(); } },
                 { name: "Media Player", action: () => { launchMediaPlayer(); closeLauncher(); } },
                 { name: "Reset parallel", action: () => { vfs.reset(); launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchSetup(); } },
             ];
