@@ -111,7 +111,7 @@ function closeWindow(win) {
         }
 
         closingWindows.delete(win.id);
-    }, 300);
+    }, 400);
 }
 
 function focusWindow(win) {
