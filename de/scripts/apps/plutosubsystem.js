@@ -14,9 +14,9 @@ function launchPlutoSubsystem() {
     // Set iframe attributes
     iframe.src = "./scripts/apps/pluto/index.html";
     iframe.style.width = "100%";
-    iframe.style.height = "calc(100% - 45px)";
+    iframe.style.height = "100%"
     iframe.style.position = "absolute";
-    iframe.style.top = "45px";
+    iframe.style.top = "0";
     iframe.style.left = "0";
     iframe.addEventListener("focus", () => {
         focusWindow(WindowBase2);

@@ -11,9 +11,9 @@ function launchYTMusic() {
     var iframe = document.createElement('webview');
     iframe.src = "https://music.youtube.com/";
     iframe.style.width = "100%";
-    iframe.style.height = "calc(100% - 50px)";
+    iframe.style.height = "100%"
     iframe.style.position = "absolute";
-    iframe.style.top = "50px";
+    iframe.style.top = "0";
     iframe.style.left = "0";
     iframe.addEventListener("focus", () => {
         focusWindow(WindowBase2);

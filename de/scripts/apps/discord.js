@@ -14,9 +14,9 @@ function launchDiscord() {
     // Set iframe attributes
     iframe.src = "https://discord.com/channels/@me";
     iframe.style.width = "100%";
-    iframe.style.height = "calc(100% - 45px)";
+    iframe.style.height = "100%"
     iframe.style.position = "absolute";
-    iframe.style.top = "45px";
+    iframe.style.top = "0";
     iframe.style.left = "0";
     //iframe.preload = "./scripts/apps/test.js";
     iframe.addEventListener("focus", () => {
