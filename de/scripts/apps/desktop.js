@@ -39,7 +39,7 @@ function launchDesktop() {
     watermark.style.textShadow = '0px 2px 20px rgba(0, 0, 0, 0.4)';
     watermark.innerHTML = `parallel Insider<br>
             running on ${getBrowserInfo()}<br>
-            updated on 10/5/2024. Build 3 (241005)`;
+            updated on 10/5/2024. Build 4 (241005)`;
     desktop.appendChild(watermark);
     document.body.appendChild(desktop);
     desktop.addEventListener("mousedown", (event) => updateX());
