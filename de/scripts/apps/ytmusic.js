@@ -1,4 +1,4 @@
-import { createWindow } from '../lib/windowManager.js';
+import { createWindow, focusWindow } from '../lib/windowManager.js';
 
 function launchYTMusic() {
     let Window2 = createWindow("YouTube Music", '400px', '700px');
@@ -15,6 +15,9 @@ function launchYTMusic() {
     iframe.style.position = "absolute";
     iframe.style.top = "50px";
     iframe.style.left = "0";
+    iframe.addEventListener("focus", () => {
+        focusWindow(WindowBase2);
+    });
 
     Window2.appendChild(iframe);
 }

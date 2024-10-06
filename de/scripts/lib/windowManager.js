@@ -129,6 +129,8 @@ function closeWindow(win) {
         if (highestZIndexWindow) {
             const titlebar = highestZIndexWindow.querySelector('.titlebar');
             titlebar.classList.remove('inactive');
+
+            updateTaskbar();
         }
     }, 300);
 }

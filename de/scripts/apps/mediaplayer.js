@@ -8,7 +8,7 @@ function launchMediaPlayer() {
 
     const YayButton = document.createElement("button");
     YayButton.innerHTML = "Select a file";
-    YayButton.style.marginLeft = "5px";
+    YayButton.style.marginLeft = "10px";
     YayButton.onclick = function () {
         const fileInput = document.createElement('input');
         fileInput.type = 'file';

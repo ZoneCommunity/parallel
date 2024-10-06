@@ -1,5 +1,5 @@
-import { processManager } from './lib/processManager.js'
-import { createWindow, closeWindow } from './lib/windowManager.js'
+import { processManager } from './lib/processManager.js';
+import { createWindow, closeWindow } from './lib/windowManager.js';
 import VFS from './lib/vfs.js';
 
 const vfs = new VFS();
@@ -7,7 +7,7 @@ const vfs = new VFS();
 // Apps
 import { launchDesktop } from './apps/desktop.js';
 import { launchMediaPlayer } from './apps/mediaplayer.js';
-import { launchYTMusic } from './apps/ytmusic.js'
+import { launchYTMusic } from './apps/ytmusic.js';
 
 const pm = new processManager();
 

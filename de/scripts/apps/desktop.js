@@ -6,11 +6,12 @@ import { getBrowserInfo } from '../lib/misc.js';
 
 // Apps
 import { launchMediaPlayer } from './mediaplayer.js';
-import { launchYTMusic } from './ytmusic.js'
-import { launchDiscord } from './discord.js'
-import { launchVSCode } from './vscode.js'
+import { launchYTMusic } from './ytmusic.js';
+import { launchDiscord } from './discord.js';
+import { launchVSCode } from './vscode.js';
+import { launchPlutoSubsystem } from './plutosubsystem.js';
 
-import { launchLoginScreen, launchSetup } from '../core.js'
+import { launchLoginScreen, launchSetup } from '../core.js';
 
 function launchDesktop() {
     const desktopProc = pm.createProcess("desktop");
@@ -39,7 +40,7 @@ function launchDesktop() {
     watermark.style.textShadow = '0px 2px 20px rgba(0, 0, 0, 0.4)';
     watermark.innerHTML = `parallel Insider<br>
             running on ${getBrowserInfo()}<br>
-            updated on 10/5/2024. Build 4 (241005)`;
+            updated on 10/6/2024. Build 5 (241006)`;
     desktop.appendChild(watermark);
     document.body.appendChild(desktop);
     desktop.addEventListener("mousedown", (event) => updateX());
@@ -129,6 +130,7 @@ function launchDesktop() {
                 { name: "Discord", action: () => { launchDiscord(); closeLauncher(); } },
                 { name: "Media Player", action: () => { launchMediaPlayer(); closeLauncher(); } },
                 { name: "Visual Studio Code", action: () => { launchVSCode(); closeLauncher(); } },
+                { name: "Pluto Subsystem", action: () => { launchPlutoSubsystem(); closeLauncher(); } },
                 { name: "Reset parallel", action: () => { vfs.reset(); launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchSetup(); } },
             ];
         

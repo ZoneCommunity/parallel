@@ -1,4 +1,4 @@
-import { createWindow } from '../lib/windowManager.js';
+import { createWindow, focusWindow } from '../lib/windowManager.js';
 
 function launchVSCode() {
 
@@ -18,6 +18,9 @@ function launchVSCode() {
     iframe.style.position = "absolute";
     iframe.style.top = "45px";
     iframe.style.left = "0";
+    iframe.addEventListener("focus", () => {
+        focusWindow(WindowBase2);
+    });
     
     // Append the iframe to the body
     Window2.appendChild(iframe);

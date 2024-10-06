@@ -1,24 +1,23 @@
 import { createWindow, focusWindow } from '../lib/windowManager.js';
 
-function launchDiscord() {
+function launchPlutoSubsystem() {
 
-    let Window2 = createWindow("Discord", '1060px', '750px');
+    let Window2 = createWindow("Pluto Subsystem", '1060px', '750px');
     let WindowBase2 = Window2.parentElement;
     let TitleBar2 = WindowBase2.querySelector('.titlebar');
-    let CloseButton = TitleBar2.querySelector('.titlebar-button');
-    let Clsbtn = CloseButton.querySelector('img');
-    Clsbtn.src = './assets/window/close_white.svg';
-    TitleBar2.style.backgroundColor = "#1E1F22";
-    TitleBar2.style.color = "#1E1F22";
+    //let CloseButton = TitleBar2.querySelector('.titlebar-button');
+    //let Clsbtn = CloseButton.querySelector('img');
+    //Clsbtn.src = './assets/window/close_white.svg';
+    //TitleBar2.style.backgroundColor = "#000000";
+    //TitleBar2.style.color = "#FFFFFF";
     var iframe = document.createElement('webview');
     // Set iframe attributes
-    iframe.src = "https://discord.com/channels/@me";
+    iframe.src = "./scripts/apps/pluto/index.html";
     iframe.style.width = "100%";
     iframe.style.height = "calc(100% - 45px)";
     iframe.style.position = "absolute";
     iframe.style.top = "45px";
     iframe.style.left = "0";
-    //iframe.preload = "./scripts/apps/test.js";
     iframe.addEventListener("focus", () => {
         focusWindow(WindowBase2);
     });
@@ -27,4 +26,4 @@ function launchDiscord() {
     Window2.appendChild(iframe);
 }
 
-export { launchDiscord };
+export { launchPlutoSubsystem };
