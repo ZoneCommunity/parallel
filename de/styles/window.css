@@ -91,18 +91,18 @@
 
 .resize-handle-top,
 .resize-handle-bottom {
-    height: 6px;
+    height: 10px;
     left: 6px;
     right: 6px;
-    cursor: ns-resize;
+    cursor: url('../assets/cursor/resizenorthsouth.svg'), auto;
 }
 
 .resize-handle-left,
 .resize-handle-right {
-    width: 6px;
+    width: 10px;
     top: 6px;
     bottom: 6px;
-    cursor: ew-resize;
+    cursor: url('../assets/cursor/resizeeastwest.svg'), auto;
 }
 
 .resize-handle-top-left,
@@ -113,10 +113,10 @@
     height: 10px;
 }
 
-.resize-handle-top-left { top: 0; left: 0; cursor: nwse-resize; }
-.resize-handle-top-right { top: 0; right: 0; cursor: nesw-resize; }
-.resize-handle-bottom-left { bottom: 0; left: 0; cursor: nesw-resize; }
-.resize-handle-bottom-right { bottom: 0; right: 0; cursor: nwse-resize; }
+.resize-handle-top-left { top: 0; left: 0; cursor: url('../assets/cursor/resizenorthwestsoutheast.svg'), auto; }
+.resize-handle-top-right { top: 0; right: 0; cursor: url('../assets/cursor/resizenortheastsouthwest.svg'), auto; }
+.resize-handle-bottom-left { bottom: 0; left: 0; cursor: url('../assets/cursor/resizenortheastsouthwest.svg'), auto; }
+.resize-handle-bottom-right { bottom: 0; right: 0; cursor: url('../assets/cursor/resizenorthwestsoutheast.svg'), auto; }
 
 .resize-handle-top { top: 0; }
 .resize-handle-bottom { bottom: 0; }
