@@ -15,8 +15,9 @@
     transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1), 
                 opacity 0.4s ease-in-out;
 
-    /* outline: 1px solid rgba(89, 89, 89, 0.5);
-    outline-offset: 0px; */
+    border-radius: 9px;
+    outline: 1px solid rgba(89, 89, 89, 0.3);
+    outline-offset: 0px;
 }
 .window.open {
     transform: scale(1);
