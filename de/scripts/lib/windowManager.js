@@ -93,6 +93,7 @@ function closeWindow(win) {
             for (let i = 0; i < windows.length; i++) {
                 let titlebar = windows[i].querySelector(".titlebar");
                 titlebar.classList.add("inactive");
+                windows[i].classList.add("inactive");
         
                 let currentZIndex = Number(windows[i].style.zIndex);
         
@@ -106,6 +107,7 @@ function closeWindow(win) {
         if (highestZIndexWindow) {
             const titlebar = highestZIndexWindow.querySelector('.titlebar');
             titlebar.classList.remove('inactive');
+            highestZIndexWindow.classList.remove("inactive");
 
             updateTaskbar();
         }
@@ -122,6 +124,7 @@ function focusWindow(win) {
       for (let i = 0; i < windows.length; i++) {
         let titlebar = windows[i].querySelector(".titlebar");
         titlebar.classList.add("inactive");
+        windows[i].classList.add("inactive");
         
         curZIndex.push(Number(windows[i].style.zIndex));
       }
@@ -137,6 +140,7 @@ function focusWindow(win) {
     }
     let titlebar = win.querySelector(".titlebar");
     titlebar.classList.remove("inactive");
+    win.classList.remove("inactive");
 
     updateTaskbar();
 }
@@ -145,6 +149,7 @@ function unfocusAll() {
     const elements = document.querySelectorAll('.titlebar');
     elements.forEach(element => {
       element.classList.add('inactive');
+      element.parentElement.classList.add('inactive');
     });
 }
 
