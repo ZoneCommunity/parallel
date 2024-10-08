@@ -4,7 +4,7 @@
     color: #333;
     opacity: 0;
 
-    box-shadow: 0px 4px 60px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 4px 100px rgba(0, 0, 0, 0.3);
 
     backdrop-filter: blur(15px);
 
@@ -170,9 +170,10 @@ input {
     display: block;
     padding: 5px;
     margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    border-style: solid;
     border-color: #9f9f9f;
+    border-width: 1px;
+    border-radius: 5px;
     font-size: 16px;
 }
 

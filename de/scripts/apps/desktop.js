@@ -10,6 +10,7 @@ import { launchYTMusic } from './ytmusic.js';
 import { launchDiscord } from './discord.js';
 import { launchVSCode } from './vscode.js';
 import { launchPlutoSubsystem } from './plutosubsystem.js';
+import { launchInternet } from './internet.js';
 
 import { launchLoginScreen, launchSetup } from '../core.js';
 
@@ -128,6 +129,7 @@ function launchDesktop() {
                 { name: "Logout", action: () => { launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchLoginScreen(); } },
                 { name: "YouTube Music", action: () => { launchYTMusic(); closeLauncher(); } },
                 { name: "Discord", action: () => { launchDiscord(); closeLauncher(); } },
+                { name: "Internet", action: () => { launchInternet(); closeLauncher(); } },
                 { name: "Media Player", action: () => { launchMediaPlayer(); closeLauncher(); } },
                 { name: "Visual Studio Code", action: () => { launchVSCode(); closeLauncher(); } },
                 { name: "Pluto Subsystem", action: () => { launchPlutoSubsystem(); closeLauncher(); } },
