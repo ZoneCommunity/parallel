@@ -9,7 +9,6 @@ import { launchMediaPlayer } from './mediaplayer.js';
 import { launchYTMusic } from './ytmusic.js';
 import { launchDiscord } from './discord.js';
 import { launchVSCode } from './vscode.js';
-import { launchPlutoSubsystem } from './plutosubsystem.js';
 import { launchInternet } from './internet.js';
 
 import { launchLoginScreen, launchSetup } from '../core.js';

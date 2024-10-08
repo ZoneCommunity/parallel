@@ -6,8 +6,6 @@ const vfs = new VFS();
 
 // Apps
 import { launchDesktop } from './apps/desktop.js';
-import { launchMediaPlayer } from './apps/mediaplayer.js';
-import { launchYTMusic } from './apps/ytmusic.js';
 
 const pm = new processManager();
 
