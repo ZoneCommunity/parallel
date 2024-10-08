@@ -4,14 +4,6 @@ function launchInternet() {
     // Create the content area for the Internet window
     let contentArea = createWindow("Internet", '1060px', '750px');
     let win = contentArea.parentElement;
-    let titleBar = win.querySelector('.titlebar');
-    let closeButton = titleBar.querySelector('.titlebar-button');
-    let closeIcon = closeButton.querySelector('img');
-
-    // Customize the title bar
-    closeIcon.src = './assets/window/close_white.svg';
-    titleBar.style.backgroundColor = "#000000";
-    titleBar.style.color = "#000000";
 
     // Create the webview element for Internet
     let webview = document.createElement('webview');
@@ -33,7 +25,7 @@ function launchInternet() {
     navContainer.style.left = '0';
     navContainer.style.width = '100%';
     navContainer.style.height = '50px';
-    navContainer.style.backgroundColor = '#000000';
+    navContainer.style.backgroundColor = '#00000000';
     navContainer.style.display = 'flex';
     navContainer.style.alignItems = 'center';
     navContainer.style.padding = '0 10px';
@@ -47,10 +39,14 @@ function launchInternet() {
     urlInput.style.padding = '0px';
     urlInput.style.paddingLeft = '10px';
     urlInput.style.marginTop = '0px';
-    urlInput.style.backgroundColor = '#1E1F22'
-    urlInput.style.color = '#FFFFFF';
-    //urlInput.style.border = '0.5px solid #9f9f9f;'
     urlInput.style.fontSize = '16px';
+    urlInput.style.borderWidth = '0.5px';
+
+    urlInput.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter') {
+            handleUrlInput();
+        }
+    });
     
     let goButton = document.createElement('button');
     goButton.textContent = 'Go';
@@ -59,20 +55,31 @@ function launchInternet() {
     goButton.style.paddingLeft = '20px';
     goButton.style.paddingRight = '20px';
     goButton.style.fontSize = '16px';
-    goButton.style.backgroundColor = '#1E1F22'
-    goButton.style.color = '#FFFFFF';
 
     goButton.addEventListener('click', function() {
+        handleUrlInput();
+    });
+
+    function handleUrlInput() {
         let url = urlInput.value.trim();
         if (url) {
-            if (!url.startsWith('http')) {
-                url = 'https://' + url;
-            } else if (!url.startsWith('https://')) {
-                url = 'https://' + url;
-            }
+            const isValidDomain = (str) => {
+                const domainPattern = /^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+                return domainPattern.test(str);
+            };
+            if (isValidDomain(url)) {
+                if (!url.startsWith('http://') && !url.startsWith('https://')) {
+                    url = 'https://' + url;
+                }
+            } else {
+                url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+            }            
             webview.src = url;
         }
-    });
+
+        urlInput.value = webview.src;
+        urlInput.blur();
+    }
 
     let isTyping = false;
     urlInput.addEventListener('focus', function() {
