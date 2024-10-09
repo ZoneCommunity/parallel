@@ -64,17 +64,30 @@ function launchInternet() {
         let url = urlInput.value.trim();
         if (url) {
             const isValidDomain = (str) => {
-                const domainPattern = /^[a-zA-Z0-9-]+\.[a-zA-Z]{2,}$/;
+                const domainPattern = /^[a-zA-Z0-9-]+\.[a-zA-Z0-9.-]+$/;
                 return domainPattern.test(str);
             };
-            if (isValidDomain(url)) {
-                if (!url.startsWith('http://') && !url.startsWith('https://')) {
-                    url = 'https://' + url;
+            
+            const getDomainFromUrl = (url) => {
+                const matches = url.match(/^https?:\/\/([^\/]+)/);
+                return matches ? matches[1] : null;
+            };
+            
+            if (url.startsWith('http://') || url.startsWith('https://')) {
+                const domain = getDomainFromUrl(url);
+                if (domain && isValidDomain(domain)) {
+                    webview.src = url;
+                } else {
+                    url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
+                    webview.src = url;
                 }
+            } else if (isValidDomain(url)) {
+                url = 'https://' + url;
+                webview.src = url;
             } else {
                 url = 'https://www.google.com/search?q=' + encodeURIComponent(url);
-            }            
-            webview.src = url;
+                webview.src = url;
+            }                    
         }
 
         urlInput.value = webview.src;
