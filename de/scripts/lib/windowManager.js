@@ -36,7 +36,7 @@ function createWindow(title, width = '400px', height = '500px', resizable = true
     closeImg.style.height = "11px";
     close.appendChild(closeImg);
     titlebar.appendChild(close);
-    close.addEventListener("mousedown", (event) => closeWindow(win));
+    close.addEventListener("mouseup", (event) => closeWindow(win));
 
     // Content Area
     const contentArea = document.createElement("div");
