@@ -2,7 +2,7 @@
   "name": "parallel",
   "productName": "parallel",
   "version": "1.0.0",
-  "description": "parallel Web Environment, (C) 2024 ZoneCommunity",
+  "description": "parallel Web Environment, (C) 2025 ZoneCommunity",
   "main": "main.js",
   "scripts": {
     "start": "electron ."
