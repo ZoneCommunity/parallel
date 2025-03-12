@@ -1,7 +1,9 @@
 # parallel
-The web-based parallel desktop environment.
+The web-based desktop environment.
+<img width="900" alt="parallel Desktop Environment" src="https://github.com/user-attachments/assets/7aaf6442-fc01-43f1-8ed5-4e9c4cb4591d">
 
-<img width="900" alt="parallel Desktop Environment" src="https://github.com/user-attachments/assets/c03cebcc-60d9-456e-9039-9303e32c2751">
+and parallel 2, coming soon.
+<img width="900" alt="parallel 2 Promo 1" src="https://github.com/user-attachments/assets/9ff576f6-037e-47c6-a183-890c57292b09">
 
 ### How to use parallel
 1. **Clone the repository**
