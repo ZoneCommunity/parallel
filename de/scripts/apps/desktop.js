@@ -7,6 +7,7 @@ import { getBrowserInfo } from '../lib/misc.js';
 // Apps
 import { launchMediaPlayer } from './mediaplayer.js';
 import { launchYTMusic } from './ytmusic.js';
+import { launchAppleMusic } from './applemusic.js';
 import { launchDiscord } from './discord.js';
 import { launchVSCode } from './vscode.js';
 import { launchInternet } from './internet.js';
@@ -126,6 +127,7 @@ function launchDesktop() {
         
             const shortcuts = [
                 { name: "YouTube Music", action: () => { launchYTMusic(); closeLauncher(); } },
+                { name: "Apple Music", action: () => { launchAppleMusic(); closeLauncher(); } },
                 { name: "Discord", action: () => { launchDiscord(); closeLauncher(); } },
                 { name: "Internet", action: () => { launchInternet(); closeLauncher(); } },
                 { name: "Media Player", action: () => { launchMediaPlayer(); closeLauncher(); } },
