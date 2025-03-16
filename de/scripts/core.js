@@ -34,14 +34,15 @@ function launchSetup() {
 
     contentArea.innerHTML = `
         <h2>Welcome to the parallel Setup!</h2>
-        <p>parallel is a modern and simple web based desktop environment.</p>
-        <br>
-        <p>This application will guide you through a simple setup of parallel.</p>
-        <p>You will:</p>
-        <ul style="list-style-type: none; padding-left: 20px;">
-            <li style="text-indent: 20px;">Create a user account</li>
-            <li style="text-indent: 20px;">Placeholder</li>
-        </ul>
+        <p>
+            parallel is a modern and simple web based desktop environment.
+        </p>
+
+        <p>You will:
+            <ul style="list-style-type: none; padding-left: 20px;">
+                <li style="text-indent: 20px;">Create a user account</li>
+            </ul>
+        </p>
 
         <button id="nextButton" style="position: absolute; bottom: 10px; right: 10px;">Next</button>
     `;
