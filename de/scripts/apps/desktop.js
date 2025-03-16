@@ -10,7 +10,7 @@ import { launchYTMusic } from './ytmusic.js';
 import { launchDiscord } from './discord.js';
 import { launchVSCode } from './vscode.js';
 import { launchInternet } from './internet.js';
-
+import { launchSettings } from './settings.js';
 import { launchLoginScreen, launchSetup } from '../core.js';
 
 function launchDesktop() {
@@ -130,7 +130,7 @@ function launchDesktop() {
                 { name: "Internet", action: () => { launchInternet(); closeLauncher(); } },
                 { name: "Media Player", action: () => { launchMediaPlayer(); closeLauncher(); } },
                 { name: "Visual Studio Code", action: () => { launchVSCode(); closeLauncher(); } },
-                { name: "Reset parallel", action: () => { vfs.reset(); launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchSetup(); } },
+                { name: "System Settings", action: () => { launchSettings(); closeLauncher(); } },
             ];
         
             shortcuts.forEach(shortcut => {
