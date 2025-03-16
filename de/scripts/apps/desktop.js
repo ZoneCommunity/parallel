@@ -7,7 +7,6 @@ import { getBrowserInfo } from '../lib/misc.js';
 // Apps
 import { launchMediaPlayer } from './mediaplayer.js';
 import { launchYTMusic } from './ytmusic.js';
-import { launchAppleMusic } from './applemusic.js';
 import { launchDiscord } from './discord.js';
 import { launchVSCode } from './vscode.js';
 import { launchInternet } from './internet.js';
@@ -97,14 +96,14 @@ function launchDesktop() {
             launcher = document.createElement("div");
             launcher.id = "launcher";
         
-            launcher.style.width = "600px";
-            launcher.style.height = "500px";
+            launcher.style.width = "375px";
+            launcher.style.height = "550px";
             launcher.style.backgroundColor = "rgba(255, 255, 255, 0.7)";
             launcher.style.position = "absolute";
             launcher.style.left = "23px";
-            launcher.style.top = "-250px";
+            launcher.style.top = "-275px";
             launcher.style.transform = "translateY(-50%) translateX(-100%)";
-            launcher.style.borderRadius = "4px";
+            launcher.style.borderRadius = "6px";
             launcher.style.boxShadow = "0px 4px 60px rgba(0, 0, 0, 0.1)";
             launcher.style.backdropFilter = 'blur(15px)';
             launcher.style.opacity = "0";
@@ -114,25 +113,23 @@ function launchDesktop() {
             username = username.split(',');
             username = username[0];
 
-            launcher.innerHTML = `<h2 style="color:black; padding-top:10px; padding-left:16px;">Hey, ${username}!</h2>
+            launcher.innerHTML = `<h3 style="color:black; padding-top:5px; padding-left:25px;">Hey, ${username}!</h3>
             
-            <h4 style="color:black; padding-top:12px; padding-left:16px;">Your apps:</h4>`;
+            <h4 style="color:black; padding-top:10px; padding-left:25px; font-weight: 600;">App List:</h4>`;
 
             const shortcutList = document.createElement("ul");
 
             shortcutList.id = "shortcutList";
             shortcutList.style.listStyleType = "none";
-            shortcutList.style.paddingLeft = "7px";
-            shortcutList.style.marginTop = "-10px";
+            shortcutList.style.paddingLeft = "35px";
+            shortcutList.style.marginTop = "-15px";
         
             const shortcuts = [
                 { name: "YouTube Music", action: () => { launchYTMusic(); closeLauncher(); } },
-                { name: "Apple Music", action: () => { launchAppleMusic(); closeLauncher(); } },
                 { name: "Discord", action: () => { launchDiscord(); closeLauncher(); } },
                 { name: "Internet", action: () => { launchInternet(); closeLauncher(); } },
                 { name: "Media Player", action: () => { launchMediaPlayer(); closeLauncher(); } },
                 { name: "Visual Studio Code", action: () => { launchVSCode(); closeLauncher(); } },
-                { name: "Logout", action: () => { launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchLoginScreen(); } },
                 { name: "Reset parallel", action: () => { vfs.reset(); launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchSetup(); } },
             ];
         
@@ -145,8 +142,16 @@ function launchDesktop() {
                 li.addEventListener("click", shortcut.action);
                 shortcutList.appendChild(li);
             });
-        
+
+            const logoutButton = document.createElement("button");
+            logoutButton.textContent = "Logout";
+            logoutButton.style.position = "absolute";
+            logoutButton.style.bottom = "10px";
+            logoutButton.style.right = "10px";
+            logoutButton.addEventListener("click", () => { launcher.remove(); pm.stopProcess(desktopProc.getpID()); pm.stopProcess(topBarProc.getpID()); closeAllWindows(); launchLoginScreen(); });
+
             launcher.appendChild(shortcutList);
+            launcher.appendChild(logoutButton);
             topBar.appendChild(launcher);
         
             requestAnimationFrame(() => {
