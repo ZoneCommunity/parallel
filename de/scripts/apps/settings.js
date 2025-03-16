@@ -59,7 +59,6 @@ function launchSettings() {
         vfs.reset(); 
         closeAllWindows();
         location.reload();
-        //launchSetup();
     });
 
     // Add function to toggle between sections
