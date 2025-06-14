@@ -1,6 +1,8 @@
 * {
     cursor: url('../assets/cursor/default.svg'), auto;
+    
     font-family: "Inter", sans-serif;
+    letter-spacing: -0.3px;
 }
 
 body {
