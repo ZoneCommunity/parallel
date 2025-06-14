@@ -55,10 +55,10 @@ function launchSetup() {
             <h2>Create a user account.</h2>
             <div style="margin-bottom: 20px;">
                 <label for="username">Username:</label>
-                <input type="text" id="username"><br>
+                <input type="text" id="username" style="margin-top: 5px;"><br>
 
                 <label for="password" style="margin-top: 10px;">Password:</label>
-                <input type="password" id="password">
+                <input type="password" id="password" style="margin-top: 5px;">
             </div>
 
             <button id="nextButton" style="position: absolute; bottom: 10px; right: 10px;">Next</button>
@@ -122,7 +122,7 @@ function launchLoginScreen() {
         <h2>Welcome, ${username}!</h2>
         <div style="margin-bottom: 20px;">
             <label for="password" style="margin-top: 10px;">Password:</label>
-            <input type="password" id="password">
+            <input type="password" id="password" style="margin-top: 5px;">
         </div>
         <br><br>
         <p><em>I forgot my password..</em></p>
