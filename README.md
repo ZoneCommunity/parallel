@@ -3,7 +3,7 @@ The web-based desktop environment.
 <img width="900" alt="parallel Desktop Environment" src="https://github.com/user-attachments/assets/7aaf6442-fc01-43f1-8ed5-4e9c4cb4591d">
 
 ## NOTE
-It is unlikely that this version of parallel will continue to recieve anymore updates, as a newer parallel is coming soon. Join my [Discord server](https://discord.com/invite/WTVGAMPnzN) for more updates!
+A newer parallel is currently in development, so this version of parallel will not recieve as many updates. Join my [Discord server](https://discord.com/invite/WTVGAMPnzN) for more information!
 
 ### How to use parallel
 1. **Clone the repository**
