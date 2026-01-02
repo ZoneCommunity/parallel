@@ -17,9 +17,9 @@ function launchSettings() {
         <div class="settings-container" style="display: flex; height: 100%;">
             <div class="sidebar" style="width: 200px; background-color:rgba(255, 255, 255, 0.4); border-right: 1px solid #ccc; border-top: 1px solid #ccc; padding: 20px 0; border-top-right-radius: 10px;">
                 <ul style="list-style: none; padding: 0; margin: 0;">
-                    <li class="menu-item" style="padding: 10px 20px; cursor: pointer; margin-bottom: 5px;" onclick="showSection('general')">General</li>
-                    <li class="menu-item" style="padding: 10px 20px; cursor: pointer; margin-bottom: 5px;" onclick="showSection('appearance')">Appearance</li>
-                    <li class="menu-item" style="padding: 10px 20px; cursor: pointer; margin-bottom: 5px;" onclick="showSection('system')">System</li>
+                    <li class="menu-item" style="padding: 10px 20px; margin-bottom: 5px;" onclick="showSection('general')">General</li>
+                    <li class="menu-item" style="padding: 10px 20px; margin-bottom: 5px;" onclick="showSection('appearance')">Appearance</li>
+                    <li class="menu-item" style="padding: 10px 20px; margin-bottom: 5px;" onclick="showSection('system')">System</li>
                 </ul>
             </div>
             <div class="content" style="flex: 1; padding: 20px;">
