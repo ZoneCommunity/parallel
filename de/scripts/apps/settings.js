@@ -61,7 +61,7 @@ function launchSettings() {
         location.reload();
     });
 
-    // Add function to toggle between sections
+    // Toggle between sections
     window.showSection = function(sectionName) {
         // Hide all sections
         document.querySelectorAll('.content > div').forEach(section => {
@@ -79,14 +79,14 @@ function launchSettings() {
         
         // Highlight the clicked menu item
         event.target.style.backgroundColor = 'rgba(0, 102, 255, 0.2)';
-        event.target.style.fontWeight = '600';
+        // event.target.style.fontWeight = '600';
     };
     
     // Set the first menu item as active by default
     const firstMenuItem = contentArea.querySelector('.menu-item');
     if (firstMenuItem) {
         firstMenuItem.style.backgroundColor = 'rgba(0, 102, 255, 0.2)';
-        firstMenuItem.style.fontWeight = '600';
+        //firstMenuItem.style.fontWeight = '600';
     }
 }
 
