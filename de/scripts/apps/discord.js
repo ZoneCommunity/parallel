@@ -10,8 +10,8 @@ function launchDiscord() {
 
     // Customize the title bar
     closeIcon.src = './assets/window/close_white.svg';
-    titleBar.style.backgroundColor = "#1E1F22";
-    titleBar.style.color = "#1E1F22";
+    titleBar.style.backgroundColor = "#121214";
+    titleBar.style.color = "#121214";
 
     // Create the webview element for Discord
     let webview = document.createElement('webview');
